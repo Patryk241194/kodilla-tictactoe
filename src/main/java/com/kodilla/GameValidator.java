@@ -58,7 +58,7 @@ public class GameValidator {
         int validatedMove;
 
         if (move < 0 || move > 9) {
-            throw new IllegalArgumentException("Invalid move. You must choose beetwen '00' and '99'.");
+            throw new IllegalArgumentException("Invalid move. You must choose between '00' and '99'.");
         } else {
             validatedMove = move;
         }
@@ -69,7 +69,7 @@ public class GameValidator {
         boolean isFieldEmpty = false;
 
         if (gameBoard.get(i, j) != ' ') {
-            throw new IllegalArgumentException("Field is not empty. Choose another one.");
+            throw new IllegalArgumentException("Field is not empty.");
         } else {
             isFieldEmpty = true;
         }

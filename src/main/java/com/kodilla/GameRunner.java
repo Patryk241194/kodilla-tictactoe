@@ -10,7 +10,6 @@ public class GameRunner {
         Player player2 = new User("Andrzej", 'o');
 
         game.makeAMove(player1,1,1);
-        game.displayBoard();
         System.out.println(logics.verifyWinner(player1.getSymbol(), game.getHowManyInARowToWin()));
 
         board.addMoveToTheBoard(player2,0,2);
@@ -25,9 +24,13 @@ public class GameRunner {
         board.displayBoard();
         System.out.println(logics.verifyWinner(player2.getSymbol(), game.getHowManyInARowToWin()));
 
-        board.addMoveToTheBoard(player1,0,0);
+        board.addMoveToTheBoard(player1,1,1);
         board.displayBoard();
         System.out.println(logics.verifyWinner(player1.getSymbol(), game.getHowManyInARowToWin()));
+
+        board.addMoveToTheBoard(player2,0,0);
+        board.displayBoard();
+        System.out.println(logics.verifyWinner(player2.getSymbol(), game.getHowManyInARowToWin()));
 
     }
 }

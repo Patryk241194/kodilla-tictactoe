@@ -28,22 +28,15 @@ public class GameMechanics {
 
     public void play() {
         this.createPlayer(numberOfPlayers);
-        boolean gameInProgress = true;
+        boolean isGameOver = false;
 
-        while (gameInProgress) {
+        while (!isGameOver) {
 
             // Starting player's move
             this.makeAMove(startingPlayer, 1, 1);
-            gameBoard.displayBoard();
 
             // We check if the starting player won the game, or if the board is full & we have a draw.
-            if (gameLogics.verifyWinner(startingPlayer.getSymbol(), this.howManyInARowToWin)) {
-                System.out.println("\n" + startingPlayer.getName() + " won the game!");
-                gameInProgress = false;
-            } else if (gameBoard.isBoardCompleted()) {
-                System.out.println("\nDraw!");
-                gameInProgress = false;
-            }
+            isGameOver = verifyWinner(startingPlayer);
 
             // Second player's move (variant with a second player or computer)
             if (numberOfPlayers == 2) {
@@ -55,17 +48,23 @@ public class GameMechanics {
                     this.makeAMove(secondPlayer, new Random().nextInt(10), new Random().nextInt(10));
                 }
             }
-            gameBoard.displayBoard();
 
             // We check if the second player / npc won the game, or if the board is full & we have a draw.
-            if (gameLogics.verifyWinner(secondPlayer.getSymbol(), this.howManyInARowToWin)) {
-                System.out.println("\n" + secondPlayer.getName() + " won the game!");
-                gameInProgress = false;
-            } else if (gameBoard.isBoardCompleted()) {
-                System.out.println("\nDraw!");
-                gameInProgress = false;
-            }
+            isGameOver = verifyWinner(secondPlayer);
         }
+    }
+
+    private boolean verifyWinner(Player player) {
+        boolean doWeHaveWinner = false;
+
+        if (gameLogics.verifyWinner(player.getSymbol(), this.howManyInARowToWin)) {
+            System.out.println("\n" + player.getName() + " won the game!");
+            doWeHaveWinner = true;
+        } else if (gameBoard.isBoardCompleted()) {
+            System.out.println("\nDraw!");
+            doWeHaveWinner = true;
+        }
+        return doWeHaveWinner;
     }
 
     public void createPlayer(int numberOfPlayers) {
@@ -86,15 +85,17 @@ public class GameMechanics {
     }
 
     public void makeAMove(Player player, int i, int j) {
-  /*      int horizontalMovement = val.validateMovementRange(i);
-        int verticalMovement = val.validateMovementRange(j);
-        boolean isEmpty = val.validateMovementPossibility(gameBoard, horizontalMovement, verticalMovement);
+        int horizontalMove = val.validateMovementRange(i);
+        int verticalMove = val.validateMovementRange(j);
+        boolean isEmpty = val.validateMovementPossibility(gameBoard, horizontalMove, verticalMove);
 
-        if (isEmpty) {*/
-        /*gameBoard.addMoveToTheBoard(player, horizontalMovement, verticalMovement);
-        * gameBoard.addMoveToTheBoard(player,i,j);*/
-        gameBoard.getBoard()[i][j] = player.getSymbol();
+        if (isEmpty) {
+            gameBoard.getBoard()[horizontalMove][verticalMove] = player.getSymbol();
 
+        }
+        this.displayBoard();
+
+        /*gameBoard.addMoveToTheBoard(player,i,j);*/
     }
 
     public void displayBoard() {
