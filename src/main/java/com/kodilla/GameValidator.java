@@ -68,7 +68,7 @@ public class GameValidator {
     public boolean validateMovementPossibility(GameBoard gameBoard, int i, int j) {
         boolean isFieldEmpty = false;
 
-        if (gameBoard.get(i, j) != ' ') {
+        if (gameBoard.getFigure(i, j) != ' ') {
             throw new IllegalArgumentException("Field is not empty.");
         } else {
             isFieldEmpty = true;

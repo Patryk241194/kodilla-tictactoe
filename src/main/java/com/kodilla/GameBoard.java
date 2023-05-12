@@ -1,7 +1,7 @@
 package com.kodilla;
 
 public class GameBoard {
-    protected char[][] board;
+    private char[][] board;
 
     public GameBoard(char gameVariant) {
         if (gameVariant == '1') {
@@ -21,16 +21,8 @@ public class GameBoard {
         }
     }
 
-    public char[][] getBoard() {
-        return board;
-    }
-
-    public void setBoard(char[][] board) {
-        this.board = board;
-    }
-
-    public char get(int i, int j) {
-        return board[i][j];
+    public char getFigure(int col, int row) {
+        return board[col][row];
     }
 
     public void displayBoard() {
@@ -71,8 +63,8 @@ public class GameBoard {
         return true;
     }
 
-    public void addMoveToTheBoard(Player player, int i, int j) {
-        board[i][j] = player.getSymbol();
+    public void setFigure(Player player, int col, int row) {
+        board[col][row] = player.getSymbol();
     }
 
 }

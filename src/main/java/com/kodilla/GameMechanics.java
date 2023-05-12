@@ -22,7 +22,7 @@ public class GameMechanics {
         this.numberOfPlayers = val.validateNumberOfPlayers(numberOfPlayers);
         this.gameVariant = val.validateGameVariant(gameVariant);
         this.gameBoard = new GameBoard(this.gameVariant);
-        this.gameLogics = new GameLogics(this, this.gameBoard);
+        this.gameLogics = new GameLogics(this);
         this.gameLogics.getRules();
     }
 
@@ -68,14 +68,14 @@ public class GameMechanics {
     }
 
     public void createPlayer(int numberOfPlayers) {
-        int number = val.validateNumberOfPlayers(numberOfPlayers);
+        int players = val.validateNumberOfPlayers(numberOfPlayers);
 
-        if (number == 1) {
+        if (players == 1) {
             player1 = new User(val.validateUserName("Patryk"), val.validateSymbol('x'));
             npc = new NPC(player1);
             startingPlayer = (new Random().nextInt(2) == 0) ? player1 : npc;
             secondPlayer = (startingPlayer == player1) ? npc : player1;
-        } else if (number == 2) {
+        } else if (players == 2) {
             player1 = new User(val.validateUserName("Patryk"), val.validateSymbol('x'));
             player2 = new User(val.validateUserName("Michał"), val.validateSymbol(player2.setOppositeSymbol(player1)));
             startingPlayer = (new Random().nextInt(2) == 0) ? player1 : player2;
@@ -84,25 +84,20 @@ public class GameMechanics {
         System.out.println(startingPlayer.getName() + " starts!");
     }
 
-    public void makeAMove(Player player, int i, int j) {
-        int horizontalMove = val.validateMovementRange(i);
-        int verticalMove = val.validateMovementRange(j);
+    public void makeAMove(Player player, int col, int row) {
+        int horizontalMove = val.validateMovementRange(col);
+        int verticalMove = val.validateMovementRange(row);
         boolean isEmpty = val.validateMovementPossibility(gameBoard, horizontalMove, verticalMove);
-
         if (isEmpty) {
-            gameBoard.getBoard()[horizontalMove][verticalMove] = player.getSymbol();
-
+            gameBoard.setFigure(player,col,row);
         }
-        this.displayBoard();
-
-        /*gameBoard.addMoveToTheBoard(player,i,j);*/
     }
 
     public void displayBoard() {
         System.out.println();
         for (int i = 0; i < gameBoard.getBoard().length; i++) {
             for (int j = 0; j < gameBoard.getBoard()[i].length; j++) {
-                System.out.print("| " + gameBoard.getBoard()[i][j] + " ");
+                System.out.print("| " + gameBoard.getFigure(i, j) + " ");
             }
             System.out.println("|");
         }
@@ -159,5 +154,9 @@ public class GameMechanics {
 
     public void setDifficulty(char difficulty) {
         this.difficulty = difficulty;
+    }
+
+    public GameBoard getGameBoard() {
+        return gameBoard;
     }
 }

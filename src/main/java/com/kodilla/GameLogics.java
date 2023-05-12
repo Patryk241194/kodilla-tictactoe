@@ -17,9 +17,9 @@ public class GameLogics {
             + " When all 100 squares are full, the game is over.\n"
             + " If no player has 5 marks in a row, the game ends in a tie.";
 
-    public GameLogics(GameMechanics gameMechanics, GameBoard gameBoard) {
+    public GameLogics(GameMechanics gameMechanics) {
         this.gameMechanics = gameMechanics;
-        this.gameBoard = gameBoard;
+        this.gameBoard = gameMechanics.getGameBoard();
     }
     public void getRules() {
         if (gameMechanics.getGameVariant() == '1')
