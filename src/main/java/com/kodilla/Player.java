@@ -1,39 +1,13 @@
 package com.kodilla;
 
-public class Player {
+public interface Player {
+    String getName();
 
-    private String username;
-    private char userSymbol;
+    void setName(String name);
 
-    public Player(String username, char userSymbol) {
-        this.username = username;
-        if (userSymbol != 'x' && userSymbol != 'o') {
-            throw new IllegalArgumentException("Invalid player symbol. You must choose 'x' or 'o'.");
-        } else {
-            this.userSymbol = userSymbol;
-        }
-    }
+    char getSymbol();
 
-    public String getUsername() {
-        return username;
-    }
+    void setSymbol(char symbol);
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public char getUserSymbol() {
-        return userSymbol;
-    }
-
-    public void setUserSymbol(char userSymbol) {
-        this.userSymbol = userSymbol;
-    }
-
-    @Override
-    public String toString() {
-        return "Player{" +
-                "username='" + username + '\'' +
-                '}';
-    }
+    char setOppositeSymbol(Player player);
 }

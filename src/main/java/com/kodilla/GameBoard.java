@@ -1,68 +1,78 @@
 package com.kodilla;
 
 public class GameBoard {
+    protected char[][] board;
 
-    Player player;
-    NPC npc;
-    private char[][] board;
-
-    public GameBoard() {
-        this.board = new char[3][3];
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                board[i][j] = ' ';
+    public GameBoard(char gameVariant) {
+        if (gameVariant == '1') {
+            this.board = new char[3][3];
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    board[i][j] = ' ';
+                }
+            }
+        } else if (gameVariant == '2') {
+            this.board = new char[10][10];
+            for (int i = 0; i < 10; i++) {
+                for (int j = 0; j < 10; j++) {
+                    board[i][j] = ' ';
+                }
             }
         }
+    }
+
+    public char[][] getBoard() {
+        return board;
+    }
+
+    public void setBoard(char[][] board) {
+        this.board = board;
+    }
+
+    public char get(int i, int j) {
+        return board[i][j];
     }
 
     public void displayBoard() {
-        for (int i = 0; i < 3; i++) {
-            System.out.println("| " + board[i][0] + " | " + board[i][1] + " | " + board[i][2] + " |");
+        System.out.println();
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                System.out.print("| " + board[i][j] + " ");
+            }
+            System.out.println("|");
         }
     }
 
-    public void addPlayerMove(int i, int j) {
-        board[i][j] = player.getUserSymbol();
-    }
-
-    public void addNpcMove(int i, int j) {
-        board[i][j] = npc.getNpcSymbol();
+    public void displayPossibleMoves() {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                System.out.print("| " + String.format("%02d", i * 10 + j) + " ");
+            }
+            System.out.println("|");
+        }
     }
 
     public void resetBoard() {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
                 board[i][j] = ' ';
             }
         }
     }
-// Metodę poniżej dorzucimy do GameLogics, tu będzie tylko plansza i dodawanie argumentów.
-    public boolean verifyWinner(char symbol) {
-        // Verification of rows
-        for (int i = 0; i < 3; i++) {
-            if (board[i][0] == symbol && board[i][1] == symbol && board[i][2] == symbol) {
-                return true;
+
+    public boolean isBoardCompleted() {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j] == ' ') {
+                    return false;
+                }
             }
         }
-
-        // Verification of columns
-        for (int i = 0; i < 3; i++) {
-            if (board[0][i] == symbol && board[1][i] == symbol && board[2][i] == symbol) {
-                return true;
-            }
-        }
-
-        // Verification of diagonals
-        if (board[0][0] == symbol && board[1][1] == symbol && board[2][2] == symbol) {
-            return true;
-        }
-
-        if (board[2][0] == symbol && board[1][1] == symbol && board[0][2] == symbol) {
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
+    public void addMoveToTheBoard(Player player, int i, int j) {
+        board[i][j] = player.getSymbol();
+    }
 
 }

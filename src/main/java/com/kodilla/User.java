@@ -1,12 +1,13 @@
 package com.kodilla;
 
-public class NPC implements Player {
+public class User implements Player {
+
     private String name;
     private char symbol;
 
-    public NPC(Player player) {
-        this.name = "computer";
-        this.symbol = setOppositeSymbol(player);
+    public User(String name, char userSymbol) {
+        this.name = name;
+        this.symbol = userSymbol;
     }
 
     public String getName() {
@@ -36,8 +37,8 @@ public class NPC implements Player {
 
     @Override
     public String toString() {
-        return "NPC{" +
-                "npcName='" + name + '\'' +
+        return "User{" +
+                "username='" + name + '\'' +
                 '}';
     }
 }
