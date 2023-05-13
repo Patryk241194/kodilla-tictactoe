@@ -1,22 +1,14 @@
 package com.kodilla;
 
 public class GameBoard {
-    protected char[][] board;
+    private int howManyInARowToWin;
+    private char[][] board;
 
-    public GameBoard(char gameVariant) {
-        if (gameVariant == '1') {
-            this.board = new char[3][3];
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    board[i][j] = ' ';
-                }
-            }
-        } else if (gameVariant == '2') {
-            this.board = new char[10][10];
-            for (int i = 0; i < 10; i++) {
-                for (int j = 0; j < 10; j++) {
-                    board[i][j] = ' ';
-                }
+    public GameBoard(int size) {
+        this.board = new char[size][size];
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                board[i][j] = ' ';
             }
         }
     }
@@ -29,8 +21,8 @@ public class GameBoard {
         this.board = board;
     }
 
-    public char get(int i, int j) {
-        return board[i][j];
+    public char getFigure(int row, int col) {
+        return board[row][col];
     }
 
     public void displayBoard() {
@@ -71,8 +63,8 @@ public class GameBoard {
         return true;
     }
 
-    public void addMoveToTheBoard(Player player, int i, int j) {
-        board[i][j] = player.getSymbol();
+    public void setFigure(Player player, int row, int col) {
+        board[row][col] = player.getSymbol();
     }
 
 }

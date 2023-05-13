@@ -9,7 +9,7 @@ public class ConsoleInputReader {
         scanner = new Scanner(System.in);
     }
 
-    public String scanName() {
+    public String Name() {
         String name;
         do {
             System.out.print("Please enter your name: ");
@@ -25,7 +25,7 @@ public class ConsoleInputReader {
         return name;
     }
 
-    public char scanSymbol() {
+    public char Symbol() {
         char symbol;
         do {
             System.out.print("Select your symbol: \"x\" or \"o\".");

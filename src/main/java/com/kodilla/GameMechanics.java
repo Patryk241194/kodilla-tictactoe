@@ -6,7 +6,9 @@ public class GameMechanics {
 
     private GameBoard gameBoard;
     private GameLogics gameLogics;
-    private GameValidator val;
+    private GameValidator validate;
+    private ConsoleInputReader scan;
+    private MinMax analyze;
     private Player startingPlayer;
     private Player secondPlayer;
     private Player player1;
@@ -14,50 +16,64 @@ public class GameMechanics {
     private Player npc;
     private int numberOfPlayers;
     private int howManyInARowToWin;
-    private char gameVariant;
-    private char difficulty;
+    private int boardSize;
 
-    public GameMechanics(int numberOfPlayers, char gameVariant) {
-        val = new GameValidator();
-        this.numberOfPlayers = val.validateNumberOfPlayers(numberOfPlayers);
-        this.gameVariant = val.validateGameVariant(gameVariant);
-        this.gameBoard = new GameBoard(this.gameVariant);
-        this.gameLogics = new GameLogics(this, this.gameBoard);
+    public GameMechanics(int numberOfPlayers, int boardSize) {
+        validate = new GameValidator();
+        scan = new ConsoleInputReader();
+        analyze = new MinMax();
+        this.numberOfPlayers = validate.numberOfPlayers(numberOfPlayers);
+        this.boardSize = validate.boardSize(boardSize);
+        this.gameBoard = new GameBoard(this.boardSize);
+        this.gameLogics = new GameLogics(this);
         this.gameLogics.getRules();
     }
 
     public void play() {
-        this.createPlayer(numberOfPlayers);
+        createPlayer(numberOfPlayers);
         boolean isGameOver = false;
 
         while (!isGameOver) {
+            // The variant where the player starts
+            if (startingPlayer == player1) {
 
-            // Starting player's move
-            this.makeAMove(startingPlayer, 1, 1);
+                makeAMove(startingPlayer, 1, 1);
+                isGameOver = verifyWinner(startingPlayer);
 
-            // We check if the starting player won the game, or if the board is full & we have a draw.
-            isGameOver = verifyWinner(startingPlayer);
-
-            // Second player's move (variant with a second player or computer)
-            if (numberOfPlayers == 2) {
-                this.makeAMove(secondPlayer, 3, 2);
-            } else if (numberOfPlayers == 1) {
-                if (getGameVariant() == '1') {
-                    this.makeAMove(secondPlayer, new Random().nextInt(4), new Random().nextInt(4));
-                } else if (getGameVariant() == '2') {
-                    this.makeAMove(secondPlayer, new Random().nextInt(10), new Random().nextInt(10));
+                switch (numberOfPlayers) {
+                    case 2:
+                        makeAMove(secondPlayer, 3, 2);
+                        break;
+                    case 1:
+                        int[] bestMove = analyze.getBestMove(gameBoard.getBoard(), secondPlayer.getSymbol(), getHowManyInARowToWin());
+                        makeAMove(secondPlayer, bestMove[0], bestMove[1]);
+                        break;
                 }
-            }
+                isGameOver = verifyWinner(secondPlayer);
 
-            // We check if the second player / npc won the game, or if the board is full & we have a draw.
-            isGameOver = verifyWinner(secondPlayer);
+            } else if (startingPlayer == player2 || startingPlayer == npc) {
+            // Variant in which the player or the npc starts, depending on whether we play vs computer or vs player
+                switch (numberOfPlayers) {
+                    case 2:
+                        makeAMove(startingPlayer, 3, 2);
+                        break;
+                    case 1:
+                        int[] bestMove = analyze.getBestMove(gameBoard.getBoard(), startingPlayer.getSymbol(), getHowManyInARowToWin());
+                        makeAMove(startingPlayer, bestMove[0], bestMove[1]);
+                        break;
+                }
+                isGameOver = verifyWinner(startingPlayer);
+
+                makeAMove(secondPlayer, 1, 1);
+                isGameOver = verifyWinner(secondPlayer);
+            }
         }
     }
 
-    private boolean verifyWinner(Player player) {
+    public boolean verifyWinner(Player player) {
         boolean doWeHaveWinner = false;
 
-        if (gameLogics.verifyWinner(player.getSymbol(), this.howManyInARowToWin)) {
+        if (gameLogics.verifyWinner(player.getSymbol(), getHowManyInARowToWin())) {
             System.out.println("\n" + player.getName() + " won the game!");
             doWeHaveWinner = true;
         } else if (gameBoard.isBoardCompleted()) {
@@ -68,44 +84,31 @@ public class GameMechanics {
     }
 
     public void createPlayer(int numberOfPlayers) {
-        int number = val.validateNumberOfPlayers(numberOfPlayers);
+        int players = validate.numberOfPlayers(numberOfPlayers);
 
-        if (number == 1) {
-            player1 = new User(val.validateUserName("Patryk"), val.validateSymbol('x'));
+        if (players == 1) {
+            player1 = new User(validate.username(scan.Name()), validate.symbol(scan.Symbol()));
             npc = new NPC(player1);
             startingPlayer = (new Random().nextInt(2) == 0) ? player1 : npc;
             secondPlayer = (startingPlayer == player1) ? npc : player1;
-        } else if (number == 2) {
-            player1 = new User(val.validateUserName("Patryk"), val.validateSymbol('x'));
-            player2 = new User(val.validateUserName("Michał"), val.validateSymbol(player2.setOppositeSymbol(player1)));
+        } else if (players == 2) {
+            player1 = new User(validate.username(scan.Name()), validate.symbol(scan.Symbol()));
+            player2 = new User(validate.username(scan.Name()), validate.symbol(player2.setOppositeSymbol(player1)));
             startingPlayer = (new Random().nextInt(2) == 0) ? player1 : player2;
             secondPlayer = (startingPlayer == player1) ? player2 : player1;
         }
         System.out.println(startingPlayer.getName() + " starts!");
     }
 
-    public void makeAMove(Player player, int i, int j) {
-        int horizontalMove = val.validateMovementRange(i);
-        int verticalMove = val.validateMovementRange(j);
-        boolean isEmpty = val.validateMovementPossibility(gameBoard, horizontalMove, verticalMove);
+    public void makeAMove(Player player, int row, int col) {
+        int horizontalMove = validate.movementRange(row,getBoardSize());
+        int verticalMove = validate.movementRange(col,getBoardSize());
+        boolean isEmpty = validate.movementPossibility(gameBoard, horizontalMove, verticalMove);
 
         if (isEmpty) {
-            gameBoard.getBoard()[horizontalMove][verticalMove] = player.getSymbol();
-
+            gameBoard.setFigure(player, row, col);
         }
-        this.displayBoard();
-
-        /*gameBoard.addMoveToTheBoard(player,i,j);*/
-    }
-
-    public void displayBoard() {
-        System.out.println();
-        for (int i = 0; i < gameBoard.getBoard().length; i++) {
-            for (int j = 0; j < gameBoard.getBoard()[i].length; j++) {
-                System.out.print("| " + gameBoard.getBoard()[i][j] + " ");
-            }
-            System.out.println("|");
-        }
+        gameBoard.displayBoard();
     }
 
     public Player getStartingPlayer() {
@@ -133,9 +136,11 @@ public class GameMechanics {
     }
 
     public int getHowManyInARowToWin() {
-        if (this.getGameVariant() == '1') {
+        if (this.getBoardSize() == 3) {
             return 3;
-        } else if (this.getGameVariant() == '2') {
+        } else if (this.getBoardSize() > 3 && this.getBoardSize() <= 6) {
+            return 4;
+        } else if (this.getBoardSize() > 6) {
             return 5;
         }
         return 0;
@@ -145,19 +150,15 @@ public class GameMechanics {
         this.howManyInARowToWin = howManyInARowToWin;
     }
 
-    public char getGameVariant() {
-        return gameVariant;
+    public int getBoardSize() {
+        return boardSize;
     }
 
-    public void setGameVariant(char gameVariant) {
-        this.gameVariant = gameVariant;
+    public void setBoardSize(char boardSize) {
+        this.boardSize = boardSize;
     }
 
-    public char getDifficulty() {
-        return difficulty;
-    }
-
-    public void setDifficulty(char difficulty) {
-        this.difficulty = difficulty;
+    public GameBoard getGameBoard() {
+        return gameBoard;
     }
 }

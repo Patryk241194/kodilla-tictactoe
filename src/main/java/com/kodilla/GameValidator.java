@@ -4,7 +4,7 @@ public class GameValidator {
 
     // User class validation
 
-    public String validateUserName(String name) {
+    public String username(String name) {
         String validatedName = null;
 
         if (name.isEmpty() || name.matches("\\s+")) {
@@ -15,7 +15,7 @@ public class GameValidator {
         return validatedName;
     }
 
-    public char validateSymbol(char symbol) {
+    public char symbol(char symbol) {
         char validatedSymbol;
 
         if (symbol != 'x' && symbol != 'o') {
@@ -26,13 +26,13 @@ public class GameValidator {
         return validatedSymbol;
     }
 
-    // NPC class validation - no need
+    // NPC class validation - ...
 
-    // GameBoard class validation - no need
+    // GameBoard class validation - ...
 
     // GameMechanics class validation
 
-    public int validateNumberOfPlayers(int numberOfPlayers) {
+    public int numberOfPlayers(int numberOfPlayers) {
         int validatedNumberOfPlayers;
 
         if (numberOfPlayers != 1 && numberOfPlayers != 2) {
@@ -43,32 +43,33 @@ public class GameValidator {
         return validatedNumberOfPlayers;
     }
 
-    public char validateGameVariant(char gameVariant) {
-        char validatedGameVariant;
+    public int boardSize(int boardSize) {
+        int validatedBoardSize;
 
-        if (gameVariant != '1' && gameVariant != '2') {
-            throw new IllegalArgumentException("Invalid game variant. You must choose '1' or '2'.");
+        if (boardSize < 3 || boardSize > 10) {
+            throw new IllegalArgumentException("Invalid board size. The board size must be between 3 and 20.");
         } else {
-            validatedGameVariant = gameVariant;
+            validatedBoardSize = boardSize;
         }
-        return validatedGameVariant;
+
+        return validatedBoardSize;
     }
 
-    public int validateMovementRange(int move) {
+    public int movementRange(int move, int boardSize) {
         int validatedMove;
 
-        if (move < 0 || move > 9) {
-            throw new IllegalArgumentException("Invalid move. You must choose between '00' and '99'.");
+        if (move < 0 || move > boardSize-1) {
+            throw new IllegalArgumentException("Invalid move. You must choose between '00' and '" + (boardSize-1) + (boardSize-1) + "'.");
         } else {
             validatedMove = move;
         }
         return validatedMove;
     }
 
-    public boolean validateMovementPossibility(GameBoard gameBoard, int i, int j) {
+    public boolean movementPossibility(GameBoard gameBoard, int row, int col) {
         boolean isFieldEmpty = false;
 
-        if (gameBoard.get(i, j) != ' ') {
+        if (gameBoard.getFigure(row, col) != ' ') {
             throw new IllegalArgumentException("Field is not empty.");
         } else {
             isFieldEmpty = true;
