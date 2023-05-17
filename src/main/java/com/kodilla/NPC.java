@@ -5,7 +5,7 @@ public class NPC implements Player {
     private char symbol;
 
     public NPC(Player player) {
-        this.name = "computer";
+        this.name = "Computer";
         this.symbol = setOppositeSymbol(player);
     }
 
@@ -36,8 +36,6 @@ public class NPC implements Player {
 
     @Override
     public String toString() {
-        return "NPC{" +
-                "npcName='" + name + '\'' +
-                '}';
+        return name;
     }
 }

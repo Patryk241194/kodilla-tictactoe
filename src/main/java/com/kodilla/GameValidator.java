@@ -47,7 +47,7 @@ public class GameValidator {
         int validatedBoardSize;
 
         if (boardSize < 3 || boardSize > 10) {
-            throw new IllegalArgumentException("Invalid board size. The board size must be between 3 and 20.");
+            throw new IllegalArgumentException("Invalid board size. The board size must be between 3 and 10.");
         } else {
             validatedBoardSize = boardSize;
         }
@@ -58,8 +58,8 @@ public class GameValidator {
     public int movementRange(int move, int boardSize) {
         int validatedMove;
 
-        if (move < 0 || move > boardSize-1) {
-            throw new IllegalArgumentException("Invalid move. You must choose between '00' and '" + (boardSize-1) + (boardSize-1) + "'.");
+        if (move < 0 || move > boardSize - 1) {
+            throw new IllegalArgumentException("Invalid move. You must choose between '00' and '" + (boardSize - 1) + (boardSize - 1) + "'.");
         } else {
             validatedMove = move;
         }
@@ -70,7 +70,7 @@ public class GameValidator {
         boolean isFieldEmpty = false;
 
         if (gameBoard.getFigure(row, col) != ' ') {
-            throw new IllegalArgumentException("Field is not empty.");
+            throw new IllegalArgumentException("Invalid movement. The selected field is not empty.");
         } else {
             isFieldEmpty = true;
         }

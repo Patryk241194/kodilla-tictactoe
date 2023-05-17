@@ -5,12 +5,19 @@ public class GameLogics {
 
     private GameMechanics gameMechanics;
     private GameBoard gameBoard;
-    private String RULES_TEMPLATE = "\nRules for Tic-Tac-Toe (%dx%d): \n"
+    protected final String RULES_TEMPLATE = "\nRules for Tic-Tac-Toe (%dx%d): \n"
             + " Players take turns putting their marks in empty squares.\n"
             + " The first player to get %d of her marks in a row (up, down, across, or diagonally) is the winner.\n"
             + " When all %d squares are full, the game is over.\n"
             + " If no player has %d marks in a row, the game ends in a tie.\n"
             + "\nThe board below presents possible movements and instructions for performing the movement:";
+    protected final String PLAYER1 = "\nPlayer1: ";
+    protected final String PLAYER2 = "\nPlayer2: ";
+    protected final String WIN_MESSAGE = "\n%s won the game!";
+    protected final String DRAW_MESSAGE = "\nDraw!";
+    protected final String STARTING_PLAYER_MESSAGE = "\n%s starts!";
+    protected final String PLAYER_TURN_MESSAGE = "\n%s:";
+    protected final String MOVE_MESSAGE = "\n%s's move: \n";
 
     public GameLogics(GameMechanics gameMechanics) {
         this.gameMechanics = gameMechanics;

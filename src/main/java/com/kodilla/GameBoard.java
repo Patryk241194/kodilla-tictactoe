@@ -1,5 +1,7 @@
 package com.kodilla;
 
+import java.util.Arrays;
+
 public class GameBoard {
     private int howManyInARowToWin;
     private char[][] board;
@@ -25,8 +27,11 @@ public class GameBoard {
         return board[row][col];
     }
 
+    public int getSize() {
+        return board.length;
+    }
+
     public void displayBoard() {
-        System.out.println();
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 System.out.print("| " + board[i][j] + " ");
@@ -67,4 +72,10 @@ public class GameBoard {
         board[row][col] = player.getSymbol();
     }
 
+    @Override
+    public String toString() {
+        return "GameBoard{" +
+                "board=" + Arrays.toString(board) +
+                '}';
+    }
 }

@@ -11,7 +11,7 @@ public class MinMax {
             for (int j = 0; j < board[i].length; j++) {
                 if (board[i][j] == ' ') {
                     board[i][j] = computerSymbol;
-                    int score = minimax(board, 0, computerSymbol, howManyInARowToWin, true);
+                    int score = minimax(board, 0, computerSymbol, howManyInARowToWin, false);
                     board[i][j] = ' ';
                     if (score > bestScore) {
                         bestScore = score;
@@ -26,8 +26,9 @@ public class MinMax {
     }
 
     public int minimax(char[][] board, int depth, char computerSymbol, int howManyInARowToWin, boolean isMaximizing) {
-        int result = analyze(board, computerSymbol, howManyInARowToWin);
         char playerSymbol = (computerSymbol == 'x') ? 'o' : 'x';
+        int result = analyze(board, playerSymbol, computerSymbol, howManyInARowToWin);
+
 
         if (result != 0) {
             return result;
@@ -41,7 +42,10 @@ public class MinMax {
                         board[i][j] = computerSymbol;
                         int score = minimax(board, depth + 1, computerSymbol, howManyInARowToWin, false);
                         board[i][j] = ' ';
-                        bestScore = Math.max(score, bestScore);
+                        /*bestScore = Math.max(score, bestScore);*/
+                        if (score > bestScore) {
+                            bestScore = score;
+                        }
                     }
                 }
             }
@@ -54,7 +58,10 @@ public class MinMax {
                         board[i][j] = playerSymbol;
                         int score = minimax(board, depth + 1, computerSymbol, howManyInARowToWin, true);
                         board[i][j] = ' ';
-                        bestScore = Math.min(score, bestScore);
+                        /*bestScore = Math.min(score, bestScore);*/
+                        if (score < bestScore) {
+                            bestScore = score;
+                        }
                     }
                 }
             }
@@ -62,34 +69,49 @@ public class MinMax {
         }
     }
 
-    // Method analyzes board to determine if the game is over and who has won, or if it is still ongoing.
-    private int analyze(char[][] board, char playerSymbol, int howManyInARowToWin) {
+    private int analyze(char[][] board, char playerSymbol, char computerSymbol, int howManyInARowToWin) {
         // Check rows
         for (int i = 0; i < board.length; i++) {
-            int count = 0;
+            int countPlayer = 0;
+            int countComputer = 0;
             for (int j = 0; j < board[i].length; j++) {
                 if (board[i][j] == playerSymbol) {
-                    count++;
+                    countPlayer++;
+                    countComputer = 0;
+                } else if (board[i][j] == computerSymbol) {
+                    countComputer++;
+                    countPlayer = 0;
                 } else {
-                    count = 0;
+                    countPlayer = 0;
+                    countComputer = 0;
                 }
-                if (count == howManyInARowToWin) {
+                if (countPlayer == howManyInARowToWin) {
                     return 1;
+                } else if (countComputer == howManyInARowToWin) {
+                    return -1;
                 }
             }
         }
 
         // Check columns
         for (int j = 0; j < board[0].length; j++) {
-            int count = 0;
+            int countPlayer = 0;
+            int countComputer = 0;
             for (int i = 0; i < board.length; i++) {
                 if (board[i][j] == playerSymbol) {
-                    count++;
+                    countPlayer++;
+                    countComputer = 0;
+                } else if (board[i][j] == computerSymbol) {
+                    countComputer++;
+                    countPlayer = 0;
                 } else {
-                    count = 0;
+                    countPlayer = 0;
+                    countComputer = 0;
                 }
-                if (count == howManyInARowToWin) {
+                if (countPlayer == howManyInARowToWin) {
                     return 1;
+                } else if (countComputer == howManyInARowToWin) {
+                    return -1;
                 }
             }
         }
@@ -98,19 +120,29 @@ public class MinMax {
         for (int i = 0; i <= board.length - howManyInARowToWin; i++) {
             for (int j = 0; j <= board[i].length - howManyInARowToWin; j++) {
                 // top-left to bottom-right
-                boolean diagonal1 = true;
+                boolean diagonal1Player = true;
+                boolean diagonal1Computer = true;
                 // top-right to bottom-left
-                boolean diagonal2 = true;
+                boolean diagonal2Player = true;
+                boolean diagonal2Computer = true;
                 for (int k = 0; k < howManyInARowToWin; k++) {
                     if (board[i + k][j + k] != playerSymbol) {
-                        diagonal1 = false;
+                        diagonal1Player = false;
                     }
-                    if (board[i + k][j + howManyInARowToWin - k - 1] != playerSymbol) {
-                        diagonal2 = false;
+                    if (board[i + k][j + k] != computerSymbol) {
+                        diagonal1Computer = false;
+                    }
+                    if (board[i + k][j + howManyInARowToWin - 1 - k] != playerSymbol) {
+                        diagonal2Player = false;
+                    }
+                    if (board[i + k][j + howManyInARowToWin - 1 - k] != computerSymbol) {
+                        diagonal2Computer = false;
                     }
                 }
-                if (diagonal1 || diagonal2) {
+                if (diagonal1Player || diagonal2Player) {
                     return 1;
+                } else if (diagonal1Computer || diagonal2Computer) {
+                    return -1;
                 }
             }
         }

@@ -37,8 +37,6 @@ public class User implements Player {
 
     @Override
     public String toString() {
-        return "User{" +
-                "username='" + name + '\'' +
-                '}';
+        return name;
     }
 }
