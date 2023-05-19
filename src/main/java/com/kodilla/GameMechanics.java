@@ -52,8 +52,8 @@ public class GameMechanics {
                         makeAMoveAndDisplayBoard(secondPlayer, scan.move(gameBoard, boardSize));
                     }
                     case 1 -> {
-                        int[] bestMove = analyze.getBestMove(gameBoard.getBoard(), secondPlayer.getSymbol(), getHowManyInARowToWin());
-                        /*int[] bestMove = analyze3x3.getBestMove(gameBoard.getBoard(), secondPlayer.getSymbol());*/
+                        /*int[] bestMove = analyze.getBestMove(gameBoard.getBoard(), secondPlayer.getSymbol(), getHowManyInARowToWin());*/
+                        int[] bestMove = analyze3x3.getBestMove(gameBoard.getBoard());
                         makeAMoveAndDisplayBoard(secondPlayer, bestMove);
                     }
                 }
@@ -67,8 +67,8 @@ public class GameMechanics {
                         makeAMoveAndDisplayBoard(startingPlayer, scan.move(gameBoard, boardSize));
                     }
                     case 1 -> {
-                        int[] bestMove = analyze.getBestMove(gameBoard.getBoard(), startingPlayer.getSymbol(), getHowManyInARowToWin());
-                        /*int[] bestMove = analyze3x3.getBestMove(gameBoard.getBoard(), startingPlayer.getSymbol());*/
+                        /*int[] bestMove = analyze.getBestMove(gameBoard.getBoard(), startingPlayer.getSymbol(), getHowManyInARowToWin());*/
+                        int[] bestMove = analyze3x3.getBestMove(gameBoard.getBoard());
                         makeAMoveAndDisplayBoard(startingPlayer, bestMove);
                     }
                 }
@@ -87,7 +87,7 @@ public class GameMechanics {
     public boolean verifyWinner(Player player) {
         boolean isGameOver = false;
 
-        if (gameLogics.verifyWinner(player.getSymbol(), getHowManyInARowToWin())) {
+        if (gameLogics.verifyWinner(player.getSymbol(), gameBoard.getBoard(), getHowManyInARowToWin()) == 1) {
             System.out.printf((gameLogics.WIN_MESSAGE) + "%n", player.getName());
             isGameOver = true;
         } else if (gameBoard.isBoardCompleted()) {
@@ -101,16 +101,16 @@ public class GameMechanics {
         int players = validate.numberOfPlayers(numberOfPlayers);
 
         if (players == 1) {
-            player1 = new User(validate.username(scan.Name()), validate.symbol(scan.Symbol()));
-            npc = new NPC(player1);
+            player1 = new Player(validate.username(scan.Name()), validate.symbol(Symbol.O));
+            npc = new Player("Computer", validate.symbol(Symbol.X));
             startingPlayer = (new Random().nextInt(2) == 0) ? player1 : npc;
             secondPlayer = (startingPlayer == player1) ? npc : player1;
         } else if (players == 2) {
             System.out.printf(gameLogics.PLAYER1);
-            player1 = new User(validate.username(scan.Name()), validate.symbol(scan.Symbol()));
+            player1 = new Player(validate.username(scan.Name()), validate.symbol(scan.Symbol()));
             scan.nextLine();
             System.out.printf(gameLogics.PLAYER2);
-            player2 = new User(validate.username(scan.Name()), validate.symbol(player1.setOppositeSymbol(player1)));
+            player2 = new Player(validate.username(scan.Name()), validate.symbol((player1.getSymbol() == Symbol.X) ? Symbol.O : Symbol.X));
             startingPlayer = (new Random().nextInt(2) == 0) ? player1 : player2;
             secondPlayer = (startingPlayer == player1) ? player2 : player1;
         }
@@ -126,7 +126,6 @@ public class GameMechanics {
         if (isMovementPossible) {
             gameBoard.setFigure(player, row, column);
         }
-
         gameBoard.displayBoard();
     }
 

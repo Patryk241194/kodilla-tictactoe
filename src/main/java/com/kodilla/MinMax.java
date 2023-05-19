@@ -9,10 +9,10 @@ public class MinMax {
 
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j] == ' ') {
+                if (board[i][j] == Symbol.EMPTY_FIELD) {
                     board[i][j] = computerSymbol;
                     int score = minimax(board, 0, computerSymbol, howManyInARowToWin, false);
-                    board[i][j] = ' ';
+                    board[i][j] = Symbol.EMPTY_FIELD;
                     if (score > bestScore) {
                         bestScore = score;
                         row = i;
@@ -25,27 +25,28 @@ public class MinMax {
         return bestMove;
     }
 
-    public int minimax(char[][] board, int depth, char computerSymbol, int howManyInARowToWin, boolean isMaximizing) {
-        char playerSymbol = (computerSymbol == 'x') ? 'o' : 'x';
-        int result = analyze(board, playerSymbol, computerSymbol, howManyInARowToWin);
+    public int minimax(char[][] board, int depth, char playerSymbol, int howManyInARowToWin, boolean isMaximizing) {
+        char computerSymbol = (playerSymbol == Symbol.X) ? Symbol.O : Symbol.X;
 
+        int result1 = GameLogics.verifyWinner(playerSymbol, board, howManyInARowToWin);
+        int result2 = GameLogics.verifyWinner(computerSymbol, board, howManyInARowToWin);
 
-        if (result != 0) {
-            return result;
+        if (result1 != 0) {
+            return result1;
+        }
+        if (result2 != 0) {
+            return result2;
         }
 
         if (isMaximizing) {
             int bestScore = Integer.MIN_VALUE;
             for (int i = 0; i < board.length; i++) {
                 for (int j = 0; j < board[i].length; j++) {
-                    if (board[i][j] == ' ') {
+                    if (board[i][j] == Symbol.EMPTY_FIELD) {
                         board[i][j] = computerSymbol;
                         int score = minimax(board, depth + 1, computerSymbol, howManyInARowToWin, false);
-                        board[i][j] = ' ';
-                        /*bestScore = Math.max(score, bestScore);*/
-                        if (score > bestScore) {
-                            bestScore = score;
-                        }
+                        board[i][j] = Symbol.EMPTY_FIELD;
+                        bestScore = Math.max(score, bestScore);
                     }
                 }
             }
@@ -54,14 +55,11 @@ public class MinMax {
             int bestScore = Integer.MAX_VALUE;
             for (int i = 0; i < board.length; i++) {
                 for (int j = 0; j < board[i].length; j++) {
-                    if (board[i][j] == ' ') {
+                    if (board[i][j] == Symbol.EMPTY_FIELD) {
                         board[i][j] = playerSymbol;
                         int score = minimax(board, depth + 1, computerSymbol, howManyInARowToWin, true);
-                        board[i][j] = ' ';
-                        /*bestScore = Math.min(score, bestScore);*/
-                        if (score < bestScore) {
-                            bestScore = score;
-                        }
+                        board[i][j] = Symbol.EMPTY_FIELD;
+                        bestScore = Math.min(score, bestScore);
                     }
                 }
             }

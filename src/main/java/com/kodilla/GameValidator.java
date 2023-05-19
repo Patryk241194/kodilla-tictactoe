@@ -2,7 +2,7 @@ package com.kodilla;
 
 public class GameValidator {
 
-    // User class validation
+    // Player class validation
 
     public String username(String name) {
         String validatedName = null;

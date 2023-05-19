@@ -14,7 +14,7 @@ public class GameMechanicsTestSuite {
     @DisplayName("Test to verify the wins of the 'o' symbol in the rows.")
     void testVerifyWinnerInRows_PlayerOWins_ReturnsTrue() {
         // given
-        Player player = new User("Player1", 'o');
+        Player player = new Player("Player1", 'o');
         game = new GameMechanics(1, 3);
 
         // when
@@ -30,7 +30,7 @@ public class GameMechanicsTestSuite {
     @DisplayName("Test to verify the wins of the 'o' symbol in the columns.")
     void testVerifyWinnerInColumns_PlayerOWins_ReturnsTrue() {
         // given
-        Player player = new User("Player1", 'o');
+        Player player = new Player("Player1", 'o');
         game = new GameMechanics(1, 3);
 
         // when
@@ -46,7 +46,7 @@ public class GameMechanicsTestSuite {
     @DisplayName("Test to verify the wins of the 'o' symbol in the diagonals.")
     void testVerifyWinnerInDiagonals_PlayerOWins_ReturnsTrue() {
         // given
-        Player player = new User("Player1", 'o');
+        Player player = new Player("Player1", 'o');
         game = new GameMechanics(1, 3);
 
         // when
@@ -62,7 +62,7 @@ public class GameMechanicsTestSuite {
     @DisplayName("Test to verify the wins of the 'x' symbol in the rows.")
     void testVerifyWinnerInRows_PlayerXWins_ReturnsTrue() {
         // given
-        Player player = new User("Player1", 'x');
+        Player player = new Player("Player1", 'x');
         game = new GameMechanics(1, 3);
 
         // when
@@ -78,7 +78,7 @@ public class GameMechanicsTestSuite {
     @DisplayName("Test to verify the wins of the 'x' symbol in the columns.")
     void testVerifyWinnerInColumns_PlayerXWins_ReturnsTrue() {
         // given
-        Player player = new User("Player1", 'x');
+        Player player = new Player("Player1", 'x');
         game = new GameMechanics(1, 3);
 
         // when
@@ -94,7 +94,7 @@ public class GameMechanicsTestSuite {
     @DisplayName("Test to verify the wins of the 'x' symbol in the diagonals.")
     void testVerifyWinnerInDiagonals_PlayerXWins_ReturnsTrue() {
         // given
-        Player player = new User("Player1", 'x');
+        Player player = new Player("Player1", 'x');
         game = new GameMechanics(1, 3);
 
         // when
@@ -110,8 +110,8 @@ public class GameMechanicsTestSuite {
     @DisplayName("Test to verify draw situation.")
     void testVerifyDraw() {
         // given
-        Player player1 = new User("Player1", 'x');
-        Player player2 = new User("Player2", 'o');
+        Player player1 = new Player("Player1", 'x');
+        Player player2 = new Player("Player2", 'o');
         game = new GameMechanics(2, 3);
 
         // when
@@ -134,8 +134,8 @@ public class GameMechanicsTestSuite {
     @DisplayName("Test to verify whether an appropriate exception will be thrown in the case of incorrectly performed moves.")
     void testVerifyIncorrectMove() {
         // given
-        Player player1 = new User("Player1", 'x');
-        Player player2 = new User("Player2", 'o');
+        Player player1 = new Player("Player1", 'x');
+        Player player2 = new Player("Player2", 'o');
         game = new GameMechanics(2, 3);
 
         // when

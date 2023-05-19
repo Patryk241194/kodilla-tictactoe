@@ -34,11 +34,11 @@ public class ConsoleInputReader {
         char symbol;
         do {
             System.out.print("Select your symbol: \"x\" or \"o\": ");
-            symbol = scanner.next().charAt(0);
-            if (symbol != 'x' && symbol != 'o') {
+            symbol = Character.toLowerCase(scanner.next().charAt(0));
+            if (symbol != Symbol.X && symbol != Symbol.O) {
                 System.out.println("Invalid input. Please try again!");
             }
-        } while (symbol != 'x' && symbol != 'o');
+        } while (symbol != Symbol.X && symbol != Symbol.O);
 
         return symbol;
     }

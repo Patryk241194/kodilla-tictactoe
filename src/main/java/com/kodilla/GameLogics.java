@@ -13,11 +13,11 @@ public class GameLogics {
             + "\nThe board below presents possible movements and instructions for performing the movement:";
     protected final String PLAYER1 = "\nPlayer1: ";
     protected final String PLAYER2 = "\nPlayer2: ";
-    protected final String WIN_MESSAGE = "\n%s won the game!";
-    protected final String DRAW_MESSAGE = "\nDraw!";
     protected final String STARTING_PLAYER_MESSAGE = "\n%s starts!";
     protected final String PLAYER_TURN_MESSAGE = "\n%s:";
     protected final String MOVE_MESSAGE = "\n%s's move: \n";
+    protected final String WIN_MESSAGE = "\n%s won the game!";
+    protected final String DRAW_MESSAGE = "\nDraw!";
 
     public GameLogics(GameMechanics gameMechanics) {
         this.gameMechanics = gameMechanics;
@@ -32,8 +32,7 @@ public class GameLogics {
         gameBoard.displayPossibleMoves();
     }
 
-    public boolean verifyWinner(char symbol, int howManyInARowToWin) {
-        char[][] board = gameBoard.getBoard();
+    public static int verifyWinner(char symbol, char[][] board, int howManyInARowToWin) {
         int boardSize = board.length;
 
         // Horizontal and vertical check
@@ -52,7 +51,7 @@ public class GameLogics {
                     counterVertical = 0;
                 }
                 if (counterHorizontal == howManyInARowToWin || counterVertical == howManyInARowToWin) {
-                    return true;
+                    return 1;
                 }
             }
         }
@@ -74,13 +73,11 @@ public class GameLogics {
                         counterDiagonal2 = 0;
                     }
                     if (counterDiagonal1 == howManyInARowToWin || counterDiagonal2 == howManyInARowToWin) {
-                        return true;
+                        return 1;
                     }
                 }
             }
         }
-        return false;
+        return 0;
     }
-
-
 }

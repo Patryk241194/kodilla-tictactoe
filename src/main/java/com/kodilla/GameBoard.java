@@ -10,7 +10,7 @@ public class GameBoard {
         this.board = new char[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                board[i][j] = ' ';
+                board[i][j] = Symbol.EMPTY_FIELD;
             }
         }
     }
@@ -52,7 +52,7 @@ public class GameBoard {
     public void resetBoard() {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
-                board[i][j] = ' ';
+                board[i][j] = Symbol.EMPTY_FIELD;
             }
         }
     }
@@ -60,7 +60,7 @@ public class GameBoard {
     public boolean isBoardCompleted() {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j] == ' ') {
+                if (board[i][j] == Symbol.EMPTY_FIELD) {
                     return false;
                 }
             }
