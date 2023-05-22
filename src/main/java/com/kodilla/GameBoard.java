@@ -6,29 +6,22 @@ public class GameBoard {
     private int howManyInARowToWin;
     private char[][] board;
 
-    public GameBoard(int size) {
+    public GameBoard(int size, int howManyInARowToWin) {
         this.board = new char[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 board[i][j] = Symbol.EMPTY_FIELD;
             }
         }
+        this.howManyInARowToWin = howManyInARowToWin;
     }
 
     public char[][] getBoard() {
         return board;
     }
 
-    public void setBoard(char[][] board) {
-        this.board = board;
-    }
-
     public char getFigure(int row, int col) {
         return board[row][col];
-    }
-
-    public int getSize() {
-        return board.length;
     }
 
     public void displayBoard() {
@@ -55,17 +48,6 @@ public class GameBoard {
                 board[i][j] = Symbol.EMPTY_FIELD;
             }
         }
-    }
-
-    public boolean isBoardCompleted() {
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j] == Symbol.EMPTY_FIELD) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     public void setFigure(Player player, int row, int col) {

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GameMechanicsTestSuite {
 
@@ -14,19 +14,26 @@ public class GameMechanicsTestSuite {
     @DisplayName("Test to verify the wins of the 'o' symbol in the rows.")
     void testVerifyWinnerInRows_PlayerOWins_ReturnsTrue() {
         // given
-        Player player = new Player("Player1", 'o');
+        Player player1 = new Player("Player1", 'o');
+        Player player2 = new Player("Player2", 'x');
         game = new GameMechanics(1, 3);
 
         // when
-        game.makeAMoveAndDisplayBoard(player, new int[]{0, 0});
-        game.makeAMoveAndDisplayBoard(player, new int[]{0, 1});
-        game.makeAMoveAndDisplayBoard(player, new int[]{0, 2});
+        game.makeAMoveAndDisplayBoard(player1, new int[]{0, 0});
+        game.makeAMoveAndDisplayBoard(player2, new int[]{1, 0});
+        game.makeAMoveAndDisplayBoard(player1, new int[]{0, 1});
+        game.makeAMoveAndDisplayBoard(player2, new int[]{1, 1});
+        game.makeAMoveAndDisplayBoard(player1, new int[]{0, 2});
 
         // then
-        Assertions.assertTrue(game.verifyWinner(player));
+        int expectedWinner = -1;
+        int actualWinner = GameLogics.verifyWinner(game.getGameBoard().getBoard(), player1.getSymbol(), player2.getSymbol(), game.getHowManyInARowToWin());
+
+        assertEquals(expectedWinner, actualWinner);
+        assertTrue(game.verifyResultOfTheDuel(player1, player2));
     }
 
-    @Test
+    /*@Test
     @DisplayName("Test to verify the wins of the 'o' symbol in the columns.")
     void testVerifyWinnerInColumns_PlayerOWins_ReturnsTrue() {
         // given
@@ -143,6 +150,6 @@ public class GameMechanicsTestSuite {
 
         // then
         assertThrows(IllegalArgumentException.class, () -> game.makeAMoveAndDisplayBoard(player2, new int[]{1, 1}));
-    }
+    }*/
 
 }

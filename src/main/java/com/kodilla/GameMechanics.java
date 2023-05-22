@@ -4,12 +4,12 @@ import java.util.Random;
 
 public class GameMechanics {
 
+
     private GameBoard gameBoard;
     private GameLogics gameLogics;
     private final GameValidator validate;
     private final ConsoleInputReader scan;
     private final MinMax analyze;
-    private final MinMax3x3 analyze3x3;
     private Player startingPlayer;
     private Player secondPlayer;
     private Player player1;
@@ -17,21 +17,26 @@ public class GameMechanics {
     private Player npc;
     private int numberOfPlayers;
     private int howManyInARowToWin;
+    private String difficulty;
     private int boardSize;
 
     public GameMechanics(int numberOfPlayers, int boardSize) {
         validate = new GameValidator();
         scan = new ConsoleInputReader();
         analyze = new MinMax();
-        analyze3x3 = new MinMax3x3();
         this.numberOfPlayers = validate.numberOfPlayers(numberOfPlayers);
         this.boardSize = validate.boardSize(boardSize);
-        this.gameBoard = new GameBoard(boardSize);
+        this.howManyInARowToWin = getHowManyInARowToWin();
+        this.gameBoard = new GameBoard(boardSize, howManyInARowToWin);
         this.gameLogics = new GameLogics(this);
         this.gameLogics.getRules();
     }
 
     public void play() {
+        if (numberOfPlayers == 1) {
+            this.difficulty = validate.difficulty(scan.difficulty());
+            scan.nextLine();
+        }
         createPlayer(numberOfPlayers);
         boolean isGameOver = false;
 
@@ -39,58 +44,63 @@ public class GameMechanics {
             // The variant where the player starts
             if (startingPlayer == player1) {
 
-                System.out.printf(gameLogics.PLAYER_TURN_MESSAGE + "%n", startingPlayer.toString());
+                System.out.printf(gameLogics.PLAYER_TURN_MESSAGE + gameLogics.NEW_LINE, startingPlayer.toString());
                 makeAMoveAndDisplayBoard(startingPlayer, scan.move(gameBoard, boardSize));
-                isGameOver = verifyWinner(startingPlayer);
+                isGameOver = verifyResultOfTheDuel(startingPlayer, secondPlayer);
                 if (isGameOver) {
                     break;
                 }
 
                 switch (numberOfPlayers) {
                     case 2 -> {
-                        System.out.printf(gameLogics.PLAYER_TURN_MESSAGE + "%n", secondPlayer.toString());
+                        System.out.printf(gameLogics.PLAYER_TURN_MESSAGE + gameLogics.NEW_LINE, secondPlayer.toString());
                         makeAMoveAndDisplayBoard(secondPlayer, scan.move(gameBoard, boardSize));
                     }
                     case 1 -> {
-                        /*int[] bestMove = analyze.getBestMove(gameBoard.getBoard(), secondPlayer.getSymbol(), getHowManyInARowToWin());*/
-                        int[] bestMove = analyze3x3.getBestMove(gameBoard.getBoard());
+                        int[] bestMove = analyze.getBestMove(gameBoard.getBoard(), howManyInARowToWin, getDifficulty(boardSize, difficulty));
                         makeAMoveAndDisplayBoard(secondPlayer, bestMove);
                     }
                 }
-                isGameOver = verifyWinner(secondPlayer);
+                isGameOver = verifyResultOfTheDuel(startingPlayer, secondPlayer);
 
             } else if (startingPlayer == player2 || startingPlayer == npc) {
                 // Variant in which the player or the npc starts, depending on whether we play vs computer or vs player
                 switch (numberOfPlayers) {
                     case 2 -> {
-                        System.out.printf(gameLogics.PLAYER_TURN_MESSAGE + "%n", startingPlayer.toString());
+                        System.out.printf(gameLogics.PLAYER_TURN_MESSAGE + gameLogics.NEW_LINE, startingPlayer.toString());
                         makeAMoveAndDisplayBoard(startingPlayer, scan.move(gameBoard, boardSize));
                     }
                     case 1 -> {
-                        /*int[] bestMove = analyze.getBestMove(gameBoard.getBoard(), startingPlayer.getSymbol(), getHowManyInARowToWin());*/
-                        int[] bestMove = analyze3x3.getBestMove(gameBoard.getBoard());
+                        int[] bestMove = analyze.getBestMove(gameBoard.getBoard(), howManyInARowToWin, getDifficulty(boardSize, difficulty));
                         makeAMoveAndDisplayBoard(startingPlayer, bestMove);
                     }
                 }
-                isGameOver = verifyWinner(startingPlayer);
+                isGameOver = verifyResultOfTheDuel(startingPlayer, secondPlayer);
                 if (isGameOver) {
                     break;
                 }
 
-                System.out.printf(gameLogics.PLAYER_TURN_MESSAGE + "%n", secondPlayer.toString());
+                System.out.printf(gameLogics.PLAYER_TURN_MESSAGE + gameLogics.NEW_LINE, secondPlayer.toString());
                 makeAMoveAndDisplayBoard(secondPlayer, scan.move(gameBoard, boardSize));
-                isGameOver = verifyWinner(secondPlayer);
+                isGameOver = verifyResultOfTheDuel(startingPlayer, secondPlayer);
             }
         }
     }
 
-    public boolean verifyWinner(Player player) {
+    public boolean verifyResultOfTheDuel(Player player1, Player player2) {
         boolean isGameOver = false;
 
-        if (gameLogics.verifyWinner(player.getSymbol(), gameBoard.getBoard(), getHowManyInARowToWin()) == 1) {
-            System.out.printf((gameLogics.WIN_MESSAGE) + "%n", player.getName());
+        if (gameLogics.verifyWinner(gameBoard.getBoard(), player1.getSymbol(), player2.getSymbol(), howManyInARowToWin) == -1) {
+            System.out.printf((gameLogics.WIN_MESSAGE) + gameLogics.NEW_LINE, player1.getName());
             isGameOver = true;
-        } else if (gameBoard.isBoardCompleted()) {
+        } else if (gameLogics.verifyWinner(gameBoard.getBoard(), player1.getSymbol(), player2.getSymbol(), howManyInARowToWin) == 1) {
+            System.out.printf((gameLogics.WIN_MESSAGE) + gameLogics.NEW_LINE, player2.getName());
+            isGameOver = true;
+        } else if (gameLogics.isBoardCompleted(gameBoard.getBoard())) {
+            System.out.println(gameLogics.DRAW_MESSAGE);
+            isGameOver = true;
+        } else if (!gameLogics.hasChanceToWin(gameBoard.getBoard(), player1.getSymbol(), howManyInARowToWin) &&
+                !gameLogics.hasChanceToWin(gameBoard.getBoard(), player2.getSymbol(), howManyInARowToWin)) {
             System.out.println(gameLogics.DRAW_MESSAGE);
             isGameOver = true;
         }
@@ -102,7 +112,7 @@ public class GameMechanics {
 
         if (players == 1) {
             player1 = new Player(validate.username(scan.Name()), validate.symbol(Symbol.O));
-            npc = new Player("Computer", validate.symbol(Symbol.X));
+            npc = new Player(gameLogics.NPC_NAME, validate.symbol(Symbol.X));
             startingPlayer = (new Random().nextInt(2) == 0) ? player1 : npc;
             secondPlayer = (startingPlayer == player1) ? npc : player1;
         } else if (players == 2) {
@@ -114,7 +124,7 @@ public class GameMechanics {
             startingPlayer = (new Random().nextInt(2) == 0) ? player1 : player2;
             secondPlayer = (startingPlayer == player1) ? player2 : player1;
         }
-        System.out.printf((gameLogics.STARTING_PLAYER_MESSAGE) + "%n", startingPlayer.getName());
+        System.out.printf((gameLogics.STARTING_PLAYER_MESSAGE) + gameLogics.NEW_LINE, startingPlayer.getName());
     }
 
     public void makeAMoveAndDisplayBoard(Player player, int[] move) {
@@ -140,11 +150,32 @@ public class GameMechanics {
         return 0;
     }
 
+    public int getDifficulty(int boardSize, String difficulty) {
+        if (difficulty.equalsIgnoreCase("easy")) {
+            return 1;
+        } else if (difficulty.equalsIgnoreCase("medium")) {
+            if (boardSize >= 3 && boardSize <= 10) {
+                return 2;
+            }
+        } else if (difficulty.equalsIgnoreCase("hard")) {
+            if (boardSize >= 3 && boardSize <= 6) {
+                return 4;
+            } else if (boardSize >= 7 && boardSize <= 10) {
+                return 3;
+            }
+        }
+        return 1;
+    }
+
     public int getBoardSize() {
         return boardSize;
     }
 
     public GameBoard getGameBoard() {
         return gameBoard;
+    }
+
+    public void setGameBoard(GameBoard gameBoard) {
+        this.gameBoard = gameBoard;
     }
 }

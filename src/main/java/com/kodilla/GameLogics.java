@@ -13,11 +13,13 @@ public class GameLogics {
             + "\nThe board below presents possible movements and instructions for performing the movement:";
     protected final String PLAYER1 = "\nPlayer1: ";
     protected final String PLAYER2 = "\nPlayer2: ";
+    protected final String NPC_NAME = "Computer";
     protected final String STARTING_PLAYER_MESSAGE = "\n%s starts!";
     protected final String PLAYER_TURN_MESSAGE = "\n%s:";
     protected final String MOVE_MESSAGE = "\n%s's move: \n";
     protected final String WIN_MESSAGE = "\n%s won the game!";
     protected final String DRAW_MESSAGE = "\nDraw!";
+    protected final String NEW_LINE = "%n";
 
     public GameLogics(GameMechanics gameMechanics) {
         this.gameMechanics = gameMechanics;
@@ -32,52 +34,200 @@ public class GameLogics {
         gameBoard.displayPossibleMoves();
     }
 
-    public static int verifyWinner(char symbol, char[][] board, int howManyInARowToWin) {
-        int boardSize = board.length;
+    public static int verifyWinner(char[][] board, char playerSymbol, char opponentSymbol, int howManyInARowToWin) {
 
-        // Horizontal and vertical check
-        for (int i = 0; i < boardSize; i++) {
-            int counterHorizontal = 0;
-            int counterVertical = 0;
-            for (int j = 0; j < boardSize; j++) {
-                if (board[i][j] == symbol) {
-                    counterHorizontal++;
-                } else {
-                    counterHorizontal = 0;
-                }
-                if (board[j][i] == symbol) {
-                    counterVertical++;
-                } else {
-                    counterVertical = 0;
-                }
-                if (counterHorizontal == howManyInARowToWin || counterVertical == howManyInARowToWin) {
-                    return 1;
-                }
-            }
-        }
+        // Check rows
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j <= board[i].length - howManyInARowToWin; j++) {
+                boolean playerWin = true;
+                boolean opponentWin = true;
 
-        // Diagonal check (top-left to bottom-right && top-right to bottom-left)
-        for (int i = 0; i <= boardSize - howManyInARowToWin; i++) {
-            for (int j = 0; j <= boardSize - howManyInARowToWin; j++) {
-                int counterDiagonal1 = 0;
-                int counterDiagonal2 = 0;
                 for (int k = 0; k < howManyInARowToWin; k++) {
-                    if (board[i + k][j + k] == symbol) {
-                        counterDiagonal1++;
-                    } else {
-                        counterDiagonal1 = 0;
+                    if (board[i][j + k] != playerSymbol) {
+                        playerWin = false;
                     }
-                    if (board[i + k][j + howManyInARowToWin - k - 1] == symbol) {
-                        counterDiagonal2++;
-                    } else {
-                        counterDiagonal2 = 0;
+                    if (board[i][j + k] != opponentSymbol) {
+                        opponentWin = false;
                     }
-                    if (counterDiagonal1 == howManyInARowToWin || counterDiagonal2 == howManyInARowToWin) {
-                        return 1;
-                    }
+                }
+
+                if (playerWin) {
+                    return -1; // Player1 wins
+                }
+                if (opponentWin) {
+                    return 1; // Player2/Computer wins
                 }
             }
         }
+
+        // Check columns
+        for (int i = 0; i <= board.length - howManyInARowToWin; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                boolean playerWin = true;
+                boolean opponentWin = true;
+
+                for (int k = 0; k < howManyInARowToWin; k++) {
+                    if (board[i + k][j] != playerSymbol) {
+                        playerWin = false;
+                    }
+                    if (board[i + k][j] != opponentSymbol) {
+                        opponentWin = false;
+                    }
+                }
+
+                if (playerWin) {
+                    return -1; // Player1 wins
+                }
+                if (opponentWin) {
+                    return 1; // Player2/Computer wins
+                }
+            }
+        }
+
+        // Check diagonals (top-left to bottom-right)
+        for (int i = 0; i <= board.length - howManyInARowToWin; i++) {
+            for (int j = 0; j <= board[i].length - howManyInARowToWin; j++) {
+                boolean playerWin = true;
+                boolean opponentWin = true;
+
+                for (int k = 0; k < howManyInARowToWin; k++) {
+                    if (board[i + k][j + k] != playerSymbol) {
+                        playerWin = false;
+                    }
+                    if (board[i + k][j + k] != opponentSymbol) {
+                        opponentWin = false;
+                    }
+                }
+
+                if (playerWin) {
+                    return -1; // Player1 wins
+                }
+                if (opponentWin) {
+                    return 1; // Player2/Computer wins
+                }
+            }
+        }
+
+        // Check diagonals (top-right to bottom-left)
+        for (int i = 0; i <= board.length - howManyInARowToWin; i++) {
+            for (int j = board[i].length - 1; j >= howManyInARowToWin - 1; j--) {
+                boolean playerWin = true;
+                boolean opponentWin = true;
+
+                for (int k = 0; k < howManyInARowToWin; k++) {
+                    if (board[i + k][j - k] != playerSymbol) {
+                        playerWin = false;
+                    }
+                    if (board[i + k][j - k] != opponentSymbol) {
+                        opponentWin = false;
+                    }
+                }
+
+                if (playerWin) {
+                    return -1; // Player1 wins
+                }
+                if (opponentWin) {
+                    return 1; // Player2/Computer wins
+                }
+            }
+        }
+
+        // Game is not over.
         return 0;
+    }
+
+    public boolean isBoardCompleted(char[][] board) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j] == Symbol.EMPTY_FIELD) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean hasChanceToWin(char[][] board, char playerSymbol, int howManyInARowToWin) {
+        // Check rows
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j <= board[i].length - howManyInARowToWin; j++) {
+                boolean hasChance = false;
+
+                for (int k = 0; k < howManyInARowToWin; k++) {
+                    if (board[i][j + k] == playerSymbol || board[i][j + k] == Symbol.EMPTY_FIELD) {
+                        hasChance = true;
+                    } else {
+                        hasChance = false;
+                        break;
+                    }
+                }
+
+                if (hasChance) {
+                    return true;
+                }
+            }
+        }
+
+        // Check columns
+        for (int i = 0; i <= board.length - howManyInARowToWin; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                boolean hasChance = false;
+
+                for (int k = 0; k < howManyInARowToWin; k++) {
+                    if (board[i + k][j] == playerSymbol || board[i + k][j] == Symbol.EMPTY_FIELD) {
+                        hasChance = true;
+                    } else {
+                        hasChance = false;
+                        break;
+                    }
+                }
+
+                if (hasChance) {
+                    return true;
+                }
+            }
+        }
+
+        // Check diagonals (top-left to bottom-right)
+        for (int i = 0; i <= board.length - howManyInARowToWin; i++) {
+            for (int j = 0; j <= board[i].length - howManyInARowToWin; j++) {
+                boolean hasChance = false;
+
+                for (int k = 0; k < howManyInARowToWin; k++) {
+                    if (board[i + k][j + k] == playerSymbol || board[i + k][j + k] == Symbol.EMPTY_FIELD) {
+                        hasChance = true;
+                    } else {
+                        hasChance = false;
+                        break;
+                    }
+                }
+
+                if (hasChance) {
+                    return true;
+                }
+            }
+        }
+
+        // Check diagonals (top-right to bottom-left)
+        for (int i = 0; i <= board.length - howManyInARowToWin; i++) {
+            for (int j = board[i].length - 1; j >= howManyInARowToWin - 1; j--) {
+                boolean hasChance = false;
+
+                for (int k = 0; k < howManyInARowToWin; k++) {
+                    if (board[i + k][j - k] == playerSymbol || board[i + k][j - k] == Symbol.EMPTY_FIELD) {
+                        hasChance = true;
+                    } else {
+                        hasChance = false;
+                        break;
+                    }
+                }
+
+                if (hasChance) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

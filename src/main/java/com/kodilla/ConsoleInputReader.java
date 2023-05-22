@@ -94,22 +94,35 @@ public class ConsoleInputReader {
         return boardSize;
     }
 
+    public String difficulty() {
+        String difficulty;
+        do {
+            System.out.print("\nSelect the difficulty level: \"easy\" / \"medium\" / \"hard\" : ");
+            difficulty = scanner.next().toLowerCase();
+            if (!difficulty.equals("easy") && !difficulty.equals("medium") && !difficulty.equals("hard")) {
+                System.out.println("Invalid input. Please try again!");
+            }
+        } while (!difficulty.equals("easy") && !difficulty.equals("medium") && !difficulty.equals("hard"));
+
+        return difficulty;
+    }
+
     public int row(int boardSize) {
         boolean isCorrectType;
         int playerMove = 0;
         do {
-            System.out.print("Choose a row value between 0 and " + boardSize + ": ");
+            System.out.print("Choose a row value between 0 and " + (boardSize - 1) + ": ");
 
             try {
                 playerMove = scanner.nextInt();
                 isCorrectType = true;
 
                 if (playerMove < 0 || playerMove > boardSize) {
-                    System.out.println("Invalid input. Please choose a value between 0 and" + boardSize + ".");
+                    System.out.println("Invalid input. Please choose a value between 0 and" + (boardSize - 1) + ".");
                     isCorrectType = false;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a numerical integer value between 0 and" + boardSize + ".");
+                System.out.println("Invalid input. Please enter a numerical integer value between 0 and" + (boardSize - 1) + ".");
                 isCorrectType = false;
                 scanner.next();
             }
@@ -122,18 +135,18 @@ public class ConsoleInputReader {
         boolean isCorrectType;
         int playerMove = 0;
         do {
-            System.out.print("Choose a column value between 0 and " + boardSize + ": ");
+            System.out.print("Choose a column value between 0 and " + (boardSize - 1) + ": ");
 
             try {
                 playerMove = scanner.nextInt();
                 isCorrectType = true;
 
                 if (playerMove < 0 || playerMove > boardSize) {
-                    System.out.println("Invalid input. Please choose a value between 0 and" + boardSize + ".");
+                    System.out.println("Invalid input. Please choose a value between 0 and" + (boardSize - 1) + ".");
                     isCorrectType = false;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a numerical integer value between 0 and" + boardSize + ".");
+                System.out.println("Invalid input. Please enter a numerical integer value between 0 and " + (boardSize - 1) + ".");
                 isCorrectType = false;
                 scanner.next();
             }

@@ -55,6 +55,17 @@ public class GameValidator {
         return validatedBoardSize;
     }
 
+    public String difficulty(String difficulty) {
+        String validatedDifficulty = null;
+
+        if (!difficulty.equals("easy") && !difficulty.equals("medium") && !difficulty.equals("hard")) {
+            throw new RuntimeException("Invalid Input");
+        } else {
+            validatedDifficulty = difficulty;
+        }
+        return validatedDifficulty;
+    }
+
     public int movementRange(int move, int boardSize) {
         int validatedMove;
 
@@ -69,7 +80,7 @@ public class GameValidator {
     public boolean movementPossibility(GameBoard gameBoard, int row, int col) {
         boolean isFieldEmpty = false;
 
-        if (gameBoard.getFigure(row, col) != ' ') {
+        if (gameBoard.getFigure(row, col) != Symbol.EMPTY_FIELD) {
             throw new IllegalArgumentException("Invalid movement. The selected field is not empty.");
         } else {
             isFieldEmpty = true;
