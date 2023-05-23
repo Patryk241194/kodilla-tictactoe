@@ -4,7 +4,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ConsoleInputReader {
-    private Scanner scanner;
+    private final Scanner scanner;
 
     public ConsoleInputReader() {
         scanner = new Scanner(System.in);
@@ -179,5 +179,27 @@ public class ConsoleInputReader {
         } while (!isPossible);
 
         return move;
+    }
+
+    public boolean requestRematch() {
+        System.out.println("\nChoose whether you want to continue playing or quit the game:");
+        System.out.println("Type 'yes' for rematch,");
+        System.out.println("Type 'no' for end of game.");
+
+        String offerRematch;
+        boolean validInput = false;
+        do {
+            offerRematch = scanner.next().toLowerCase();
+            if (offerRematch.equals("yes")) {
+                validInput = false;
+                return false;
+            } else if (offerRematch.equals("no")) {
+                validInput = true;
+                return true;
+            } else {
+                System.out.println("Invalid input, please type 'yes' or 'no':");
+            }
+        } while (!validInput);
+        return true;
     }
 }

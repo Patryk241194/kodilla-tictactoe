@@ -3,8 +3,8 @@ package com.kodilla;
 import java.util.Arrays;
 
 public class GameBoard {
-    private int howManyInARowToWin;
-    private char[][] board;
+    private final int howManyInARowToWin;
+    private final char[][] board;
 
     public GameBoard(int size, int howManyInARowToWin) {
         this.board = new char[size][size];

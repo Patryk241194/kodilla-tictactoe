@@ -5,7 +5,6 @@ public class GameRunner {
         ConsoleInputReader scan = new ConsoleInputReader();
         GameMechanics game = new GameMechanics(scan.numberOfPlayers(), scan.boardSize());
         game.play();
-
     }
 }
 

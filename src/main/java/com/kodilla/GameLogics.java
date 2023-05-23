@@ -3,8 +3,8 @@ package com.kodilla;
 public class GameLogics {
 
 
-    private GameMechanics gameMechanics;
-    private GameBoard gameBoard;
+    private final GameMechanics gameMechanics;
+    private final GameBoard gameBoard;
     protected final String RULES_TEMPLATE = "\nRules for Tic-Tac-Toe (%dx%d): \n"
             + " Players take turns putting their marks in empty squares.\n"
             + " The first player to get %d of her marks in a row (up, down, across, or diagonally) is the winner.\n"
@@ -136,7 +136,7 @@ public class GameLogics {
         return 0;
     }
 
-    public boolean isBoardCompleted(char[][] board) {
+    public static boolean isBoardCompleted(char[][] board) {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 if (board[i][j] == Symbol.EMPTY_FIELD) {
@@ -147,7 +147,7 @@ public class GameLogics {
         return true;
     }
 
-    public boolean hasChanceToWin(char[][] board, char playerSymbol, int howManyInARowToWin) {
+    public static boolean hasChanceToWin(char[][] board, char playerSymbol, int howManyInARowToWin) {
         // Check rows
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j <= board[i].length - howManyInARowToWin; j++) {

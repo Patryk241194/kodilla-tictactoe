@@ -16,7 +16,7 @@ public class GameMechanicsTestSuite {
         // given
         Player player1 = new Player("Player1", 'o');
         Player player2 = new Player("Player2", 'x');
-        game = new GameMechanics(1, 3);
+        game = new GameMechanics(2, 3);
 
         // when
         game.makeAMoveAndDisplayBoard(player1, new int[]{0, 0});
@@ -33,84 +33,122 @@ public class GameMechanicsTestSuite {
         assertTrue(game.verifyResultOfTheDuel(player1, player2));
     }
 
-    /*@Test
+    @Test
     @DisplayName("Test to verify the wins of the 'o' symbol in the columns.")
     void testVerifyWinnerInColumns_PlayerOWins_ReturnsTrue() {
         // given
-        Player player = new Player("Player1", 'o');
-        game = new GameMechanics(1, 3);
+        Player player1 = new Player("Player1", 'o');
+        Player player2 = new Player("Player2", 'x');
+        game = new GameMechanics(2, 3);
 
         // when
-        game.makeAMoveAndDisplayBoard(player, new int[]{0, 0});
-        game.makeAMoveAndDisplayBoard(player, new int[]{1, 0});
-        game.makeAMoveAndDisplayBoard(player, new int[]{2, 0});
+        game.makeAMoveAndDisplayBoard(player1, new int[]{0, 0});
+        game.makeAMoveAndDisplayBoard(player2, new int[]{0, 1});
+        game.makeAMoveAndDisplayBoard(player1, new int[]{1, 0});
+        game.makeAMoveAndDisplayBoard(player2, new int[]{1, 1});
+        game.makeAMoveAndDisplayBoard(player1, new int[]{2, 0});
 
         // then
-        Assertions.assertTrue(game.verifyWinner(player));
+        int expectedWinner = -1;
+        int actualWinner = GameLogics.verifyWinner(game.getGameBoard().getBoard(), player1.getSymbol(), player2.getSymbol(), game.getHowManyInARowToWin());
+
+        assertEquals(expectedWinner, actualWinner);
+        assertTrue(game.verifyResultOfTheDuel(player1, player2));
     }
 
     @Test
     @DisplayName("Test to verify the wins of the 'o' symbol in the diagonals.")
     void testVerifyWinnerInDiagonals_PlayerOWins_ReturnsTrue() {
         // given
-        Player player = new Player("Player1", 'o');
-        game = new GameMechanics(1, 3);
+        Player player1 = new Player("Player1", 'o');
+        Player player2 = new Player("Player2", 'x');
+        game = new GameMechanics(2, 3);
 
         // when
-        game.makeAMoveAndDisplayBoard(player, new int[]{0, 0});
-        game.makeAMoveAndDisplayBoard(player, new int[]{1, 1});
-        game.makeAMoveAndDisplayBoard(player, new int[]{2, 2});
+        game.makeAMoveAndDisplayBoard(player1, new int[]{0, 0});
+        game.makeAMoveAndDisplayBoard(player2, new int[]{0, 1});
+        game.makeAMoveAndDisplayBoard(player1, new int[]{1, 1});
+        game.makeAMoveAndDisplayBoard(player2, new int[]{1, 2});
+        game.makeAMoveAndDisplayBoard(player1, new int[]{2, 2});
 
         // then
-        Assertions.assertTrue(game.verifyWinner(player));
+        int expectedWinner = -1;
+        int actualWinner = GameLogics.verifyWinner(game.getGameBoard().getBoard(), player1.getSymbol(), player2.getSymbol(), game.getHowManyInARowToWin());
+
+        assertEquals(expectedWinner, actualWinner);
+        assertTrue(game.verifyResultOfTheDuel(player1, player2));
     }
 
     @Test
     @DisplayName("Test to verify the wins of the 'x' symbol in the rows.")
     void testVerifyWinnerInRows_PlayerXWins_ReturnsTrue() {
         // given
-        Player player = new Player("Player1", 'x');
-        game = new GameMechanics(1, 3);
+        Player player1 = new Player("Player1", 'o');
+        Player player2 = new Player("Player2", 'x');
+        game = new GameMechanics(2, 3);
 
         // when
-        game.makeAMoveAndDisplayBoard(player, new int[]{2, 0});
-        game.makeAMoveAndDisplayBoard(player, new int[]{2, 1});
-        game.makeAMoveAndDisplayBoard(player, new int[]{2, 2});
+        game.makeAMoveAndDisplayBoard(player1, new int[]{0, 0});
+        game.makeAMoveAndDisplayBoard(player2, new int[]{1, 0});
+        game.makeAMoveAndDisplayBoard(player1, new int[]{0, 1});
+        game.makeAMoveAndDisplayBoard(player2, new int[]{1, 1});
+        game.makeAMoveAndDisplayBoard(player1, new int[]{2, 2});
+        game.makeAMoveAndDisplayBoard(player2, new int[]{1, 2});
 
         // then
-        Assertions.assertTrue(game.verifyWinner(player));
+        int expectedWinner = 1;
+        int actualWinner = GameLogics.verifyWinner(game.getGameBoard().getBoard(), player1.getSymbol(), player2.getSymbol(), game.getHowManyInARowToWin());
+
+        assertEquals(expectedWinner, actualWinner);
+        assertTrue(game.verifyResultOfTheDuel(player1, player2));
     }
 
     @Test
     @DisplayName("Test to verify the wins of the 'x' symbol in the columns.")
     void testVerifyWinnerInColumns_PlayerXWins_ReturnsTrue() {
         // given
-        Player player = new Player("Player1", 'x');
-        game = new GameMechanics(1, 3);
+        Player player1 = new Player("Player1", 'o');
+        Player player2 = new Player("Player2", 'x');
+        game = new GameMechanics(2, 3);
 
         // when
-        game.makeAMoveAndDisplayBoard(player, new int[]{0, 2});
-        game.makeAMoveAndDisplayBoard(player, new int[]{1, 2});
-        game.makeAMoveAndDisplayBoard(player, new int[]{2, 2});
+        game.makeAMoveAndDisplayBoard(player1, new int[]{0, 0});
+        game.makeAMoveAndDisplayBoard(player2, new int[]{0, 2});
+        game.makeAMoveAndDisplayBoard(player1, new int[]{1, 0});
+        game.makeAMoveAndDisplayBoard(player2, new int[]{1, 2});
+        game.makeAMoveAndDisplayBoard(player1, new int[]{1, 1});
+        game.makeAMoveAndDisplayBoard(player2, new int[]{2, 2});
 
         // then
-        Assertions.assertTrue(game.verifyWinner(player));
+        int expectedWinner = 1;
+        int actualWinner = GameLogics.verifyWinner(game.getGameBoard().getBoard(), player1.getSymbol(), player2.getSymbol(), game.getHowManyInARowToWin());
+
+        assertEquals(expectedWinner, actualWinner);
+        assertTrue(game.verifyResultOfTheDuel(player1, player2));
     }
 
     @Test
     @DisplayName("Test to verify the wins of the 'x' symbol in the diagonals.")
     void testVerifyWinnerInDiagonals_PlayerXWins_ReturnsTrue() {
         // given
-        Player player = new Player("Player1", 'x');
-        game = new GameMechanics(1, 3);
+        Player player1 = new Player("Player1", 'o');
+        Player player2 = new Player("Player2", 'x');
+        game = new GameMechanics(2, 3);
 
         // when
-        game.makeAMoveAndDisplayBoard(player, new int[]{0, 2});
-        game.makeAMoveAndDisplayBoard(player, new int[]{1, 1});
-        game.makeAMoveAndDisplayBoard(player, new int[]{2, 0});
+        game.makeAMoveAndDisplayBoard(player1, new int[]{0, 0});
+        game.makeAMoveAndDisplayBoard(player2, new int[]{0, 2});
+        game.makeAMoveAndDisplayBoard(player1, new int[]{1, 0});
+        game.makeAMoveAndDisplayBoard(player2, new int[]{1, 1});
+        game.makeAMoveAndDisplayBoard(player1, new int[]{1, 2});
+        game.makeAMoveAndDisplayBoard(player2, new int[]{2, 0});
 
         // then
-        Assertions.assertTrue(game.verifyWinner(player));
+        int expectedWinner = 1;
+        int actualWinner = GameLogics.verifyWinner(game.getGameBoard().getBoard(), player1.getSymbol(), player2.getSymbol(), game.getHowManyInARowToWin());
+
+        assertEquals(expectedWinner, actualWinner);
+        assertTrue(game.verifyResultOfTheDuel(player1, player2));
     }
 
     @Test
@@ -133,8 +171,14 @@ public class GameMechanicsTestSuite {
         game.makeAMoveAndDisplayBoard(player1, new int[]{2, 2});
 
         // then
-        Assertions.assertTrue(game.verifyWinner(player1));
-        Assertions.assertTrue(game.verifyWinner(player2));
+        int expectedWinner = 0;
+        int actualWinner = GameLogics.verifyWinner(game.getGameBoard().getBoard(), player1.getSymbol(), player2.getSymbol(), game.getHowManyInARowToWin());
+
+        assertEquals(expectedWinner, actualWinner);
+        assertTrue(game.verifyResultOfTheDuel(player1, player2));
+        assertFalse(GameLogics.hasChanceToWin(game.getGameBoard().getBoard(), player1.getSymbol(), game.getHowManyInARowToWin()));
+        assertFalse(GameLogics.hasChanceToWin(game.getGameBoard().getBoard(), player2.getSymbol(), game.getHowManyInARowToWin()));
+        assertTrue(GameLogics.isBoardCompleted(game.getGameBoard().getBoard()));
     }
 
     @Test
@@ -150,6 +194,6 @@ public class GameMechanicsTestSuite {
 
         // then
         assertThrows(IllegalArgumentException.class, () -> game.makeAMoveAndDisplayBoard(player2, new int[]{1, 1}));
-    }*/
+    }
 
 }
