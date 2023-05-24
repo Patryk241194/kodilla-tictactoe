@@ -1,4 +1,4 @@
-package com.kodilla;
+package com.kodilla.backend;
 
 public final class Symbol {
     public static final char X = 'x';

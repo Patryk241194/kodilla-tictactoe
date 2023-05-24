@@ -1,6 +1,8 @@
 package com.kodilla;
 
-import org.junit.jupiter.api.Assertions;
+import com.kodilla.backend.GameLogics;
+import com.kodilla.backend.GameMechanics;
+import com.kodilla.backend.Player;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package com.kodilla;
+package com.kodilla.backend;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
