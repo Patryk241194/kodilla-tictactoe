@@ -27,10 +27,10 @@ public class Player {
     }
 
     public char setOppositeSymbol(Player player) {
-        if (player.getSymbol() == 'x') {
-            return 'o';
-        } else if (player.getSymbol() == 'o') {
-            return 'x';
+        if (player.getSymbol() == Symbol.X) {
+            return Symbol.O;
+        } else if (player.getSymbol() == Symbol.O) {
+            return Symbol.X;
         }
         return 0;
     }

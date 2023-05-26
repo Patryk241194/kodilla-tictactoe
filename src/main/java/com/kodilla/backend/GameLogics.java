@@ -5,6 +5,9 @@ public class GameLogics {
 
     private final GameMechanics gameMechanics;
     private final GameBoard gameBoard;
+    protected final String MENU_MESSAGE = "\nMenu:\n1. New game - Start a new tic-tac-toe game\n"
+            + "2. GameRanking - Display player ranking\n"
+            + "3. Quit game - Exit the program";
     protected final String RULES_TEMPLATE = "\nRules for Tic-Tac-Toe (%dx%d): \n"
             + " Players take turns putting their marks in empty squares.\n"
             + " The first player to get %d of her marks in a row (up, down, across, or diagonally) is the winner.\n"

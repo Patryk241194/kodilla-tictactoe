@@ -7,8 +7,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-public class TicTacToe extends Application {
 
+public class TicTacToe extends Application {
     private final int boardSize = 3;
     private final int tileSize = 75;
 

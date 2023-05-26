@@ -10,11 +10,11 @@ public class ConsoleInputReader {
         scanner = new Scanner(System.in);
     }
 
-    public String Name() {
+    public String name() {
         String name;
         do {
             System.out.print("\nPlease enter your name: ");
-            name = scanner.nextLine()/*.trim()*/; // remove whitespace from start and end
+            name = scanner.nextLine();
 
 //          if-condition (name.isEmpty() || name.matches("\\s+") checks if the string is empty or consists only of whitespace.
 
@@ -30,7 +30,7 @@ public class ConsoleInputReader {
         scanner.nextLine();
     }
 
-    public char Symbol() {
+    public char symbol() {
         char symbol;
         do {
             System.out.print("Select your symbol: \"x\" or \"o\": ");
@@ -39,8 +39,32 @@ public class ConsoleInputReader {
                 System.out.println("Invalid input. Please try again!");
             }
         } while (symbol != Symbol.X && symbol != Symbol.O);
-
+        nextLine();
         return symbol;
+    }
+
+    public int choice() {
+        boolean isCorrectType;
+        int menuChoice = 0;
+        do {
+            System.out.print("\nChoose option 1, 2, or 3: ");
+
+            try {
+                menuChoice = scanner.nextInt();
+                isCorrectType = true;
+
+                if (menuChoice != 1 && menuChoice != 2 && menuChoice != 3) {
+                    System.out.println("Invalid input. You can only choose between '1' and '3'.");
+                    isCorrectType = false;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a numerical integer value. You can only choose between '1' and '3'.");
+                isCorrectType = false;
+                scanner.next();
+            }
+        } while (!isCorrectType);
+        nextLine();
+        return menuChoice;
     }
 
     public int numberOfPlayers() {
@@ -103,7 +127,7 @@ public class ConsoleInputReader {
                 System.out.println("Invalid input. Please try again!");
             }
         } while (!difficulty.equals("easy") && !difficulty.equals("medium") && !difficulty.equals("hard"));
-
+        nextLine();
         return difficulty;
     }
 
@@ -184,7 +208,7 @@ public class ConsoleInputReader {
     public boolean requestRematch() {
         System.out.println("\nChoose whether you want to continue playing or quit the game:");
         System.out.println("Type 'yes' for rematch,");
-        System.out.println("Type 'no' for end of game.");
+        System.out.println("Type 'no' for return to the main menu.");
 
         String offerRematch;
         boolean validInput = false;
@@ -200,6 +224,7 @@ public class ConsoleInputReader {
                 System.out.println("Invalid input, please type 'yes' or 'no':");
             }
         } while (!validInput);
+        nextLine();
         return true;
     }
 }

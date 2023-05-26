@@ -32,6 +32,18 @@ public class GameValidator {
 
     // GameMechanics class validation
 
+    public int menuChoice(int choice) {
+        int validatedMenuChoice;
+
+        if (choice != 1 && choice != 2 && choice != 3) {
+            throw new IllegalArgumentException("Invalid number. You must choose number between '1' and '2'.");
+        } else {
+            validatedMenuChoice = choice;
+        }
+        return validatedMenuChoice;
+    }
+
+
     public int numberOfPlayers(int numberOfPlayers) {
         int validatedNumberOfPlayers;
 

@@ -18,6 +18,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.jetbrains:annotations:23.0.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.2'
@@ -25,7 +26,6 @@ dependencies {
     testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.3.0'
     implementation 'org.openjfx:javafx-controls:17'
     implementation 'org.openjfx:javafx-fxml:17'
-
 }
 
 tasks.named('test') {
