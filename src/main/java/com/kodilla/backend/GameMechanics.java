@@ -34,6 +34,9 @@ public class GameMechanics {
     }
 
     public void play() {
+        // Loading the ranking at program start
+        ranking.loadRanking();
+
         boolean endOfProgram = false;
         while (!endOfProgram) {
             System.out.println(gameLogics.MENU_MESSAGE);
@@ -107,6 +110,8 @@ public class GameMechanics {
                     ranking.displayFullRanking();
                     break;
                 case 3:
+                    // Saving the ranking when leaving the game
+                    ranking.saveRanking();
                     endOfProgram = true;
                     break;
                 default:
