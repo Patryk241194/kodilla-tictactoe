@@ -3,6 +3,7 @@ package com.kodilla.backend;
 import java.io.*;
 import java.util.*;
 
+@SuppressWarnings("unchecked")
 public class GameRanking implements Serializable {
     private final Map<Player, PlayerStats> playerStatsMap;
     private final File rankingSave;
@@ -37,16 +38,6 @@ public class GameRanking implements Serializable {
             System.out.println("Player not found in the ranking.");
         }
     }
-
-/*    public void displayFullRanking() {
-        System.out.println("\nGameRanking:");
-        List<Player> sortedPlayers = new ArrayList<>(playerStatsMap.keySet());
-        sortedPlayers.sort(Comparator.comparingDouble(player -> playerStatsMap.get(player).getWinsToLossesRatio()).reversed());
-        for (Player player : sortedPlayers) {
-            PlayerStats playerStats = playerStatsMap.get(player);
-            System.out.println(player.getName() + " - Wins: " + playerStats.getWins() + ", Losses: " + playerStats.getLosses() + ", W/L ratio: " + playerStats.getWinsToLossesRatio());
-        }
-    }*/
 
     public void displayFullRanking() {
         System.out.println("\nGameRanking:");

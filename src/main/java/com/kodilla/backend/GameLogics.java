@@ -8,6 +8,7 @@ public class GameLogics {
     protected final String MENU_MESSAGE = "\nMenu:\n1. New game - Start a new tic-tac-toe game\n"
             + "2. GameRanking - Display player ranking\n"
             + "3. Quit game - Exit the program";
+    protected final String INVALID_MENU_SELECTION = "Invalid menu selection. Try again.";
     protected final String RULES_TEMPLATE = "\nRules for Tic-Tac-Toe (%dx%d): \n"
             + " Players take turns putting their marks in empty squares.\n"
             + " The first player to get %d of her marks in a row (up, down, across, or diagonally) is the winner.\n"
@@ -23,6 +24,9 @@ public class GameLogics {
     protected final String WIN_MESSAGE = "\n%s won the game!";
     protected final String DRAW_MESSAGE = "\nDraw!";
     protected final String NEW_LINE = "%n";
+    protected final String DIFFICULTY_EASY = "easy";
+    protected final String DIFFICULTY_MEDIUM = "medium";
+    protected final String DIFFICULTY_HARD = "hard";
 
     public GameLogics(GameMechanics gameMechanics) {
         this.gameMechanics = gameMechanics;

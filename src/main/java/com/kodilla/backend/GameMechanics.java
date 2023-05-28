@@ -4,7 +4,6 @@ import java.util.Random;
 
 public class GameMechanics {
 
-
     private final GameBoard gameBoard;
     private final GameLogics gameLogics;
     private final GameValidator validate;
@@ -41,13 +40,11 @@ public class GameMechanics {
         while (!endOfProgram) {
             System.out.println(gameLogics.MENU_MESSAGE);
             int menuChoice = validate.menuChoice(scan.choice());
-//            scan.nextLine();
 
             switch (menuChoice) {
                 case 1:
                     if (numberOfPlayers == 1) {
                         this.difficulty = validate.difficulty(scan.difficulty());
-//                        scan.nextLine();
                     }
                     createPlayer(numberOfPlayers);
                     boolean endOfGame = false;
@@ -103,7 +100,6 @@ public class GameMechanics {
                             updatePlayersScore(player1, player2);
                         }
                         endOfGame = scan.requestRematch();
-//                        scan.nextLine();
                         gameBoard.resetBoard();
                     }
                 case 2:
@@ -115,7 +111,7 @@ public class GameMechanics {
                     endOfProgram = true;
                     break;
                 default:
-                    System.out.println("Invalid menu selection. Try again.");
+                    System.out.println(gameLogics.INVALID_MENU_SELECTION);
                     break;
             }
         }
@@ -130,7 +126,6 @@ public class GameMechanics {
         } else if (players == 2) {
             System.out.printf(gameLogics.PLAYER1);
             player1 = new Player(validate.username(scan.name()), validate.symbol(scan.symbol()));
-//            scan.nextLine();
             System.out.printf(gameLogics.PLAYER2);
             player2 = new Player(validate.username(scan.name()), validate.symbol((player1.getSymbol() == Symbol.X) ? Symbol.O : Symbol.X));
         }
@@ -234,15 +229,15 @@ public class GameMechanics {
     }
 
     public int getDifficulty(int boardSize, String difficulty) {
-        if (difficulty.equalsIgnoreCase("easy")) {
+        if (difficulty.equalsIgnoreCase(gameLogics.DIFFICULTY_EASY)) {
             return 1;
-        } else if (difficulty.equalsIgnoreCase("medium")) {
+        } else if (difficulty.equalsIgnoreCase(gameLogics.DIFFICULTY_MEDIUM)) {
             if (boardSize == 3) {
                 return 5;
             } else if (boardSize >= 4 && boardSize <= 10) {
                 return 2;
             }
-        } else if (difficulty.equalsIgnoreCase("hard")) {
+        } else if (difficulty.equalsIgnoreCase(gameLogics.DIFFICULTY_HARD)) {
             if (boardSize == 3) {
                 return 8;
             } else if (boardSize >= 4 && boardSize <= 6) {

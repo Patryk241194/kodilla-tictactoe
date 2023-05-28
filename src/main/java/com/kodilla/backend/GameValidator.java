@@ -26,10 +26,6 @@ public class GameValidator {
         return validatedSymbol;
     }
 
-    // NPC class validation - ...
-
-    // GameBoard class validation - ...
-
     // GameMechanics class validation
 
     public int menuChoice(int choice) {

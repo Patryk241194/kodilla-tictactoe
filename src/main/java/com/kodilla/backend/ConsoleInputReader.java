@@ -194,11 +194,9 @@ public class ConsoleInputReader {
                     move[1] = col;
                 } else {
                     System.out.println("Invalid movement. The selected field is not empty.");
-                    isPossible = false;
                 }
             } catch (IllegalArgumentException e) {
                 System.out.println("Invalid movement. The selected field is not empty.");
-                isPossible = false;
             }
         } while (!isPossible);
 
