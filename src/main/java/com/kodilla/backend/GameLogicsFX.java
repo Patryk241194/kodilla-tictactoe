@@ -1,11 +1,9 @@
-/*
 package com.kodilla.backend;
+
+import com.kodilla.frontend.TileBoard;
 
 public class GameLogicsFX {
 
-
-    private final GameMechanics gameMechanics;
-    private final GameBoard gameBoard;
     protected final String MENU_MESSAGE = "\nMenu:\n1. New game - Start a new tic-tac-toe game\n"
             + "2. GameRanking - Display player ranking\n"
             + "3. Quit game - Exit the program";
@@ -29,9 +27,9 @@ public class GameLogicsFX {
     protected final String DIFFICULTY_MEDIUM = "medium";
     protected final String DIFFICULTY_HARD = "hard";
 
-    public GameLogics(GameMechanics gameMechanics) {
+/*    public GameLogicsFX(GameMechanics gameMechanics) {
         this.gameMechanics = gameMechanics;
-        this.gameBoard = gameMechanics.getGameBoard();
+        this.gameBoard = gameMechanics.getTiles();
     }
 
     public void getRules() {
@@ -40,21 +38,21 @@ public class GameLogicsFX {
         String rules = String.format(RULES_TEMPLATE, boardSize, boardSize, howManyInARow, boardSize * boardSize, howManyInARow);
         System.out.println(rules);
         gameBoard.displayPossibleMoves();
-    }
+    }*/
 
-    public static int verifyWinner(char[][] board, char playerSymbol, char opponentSymbol, int howManyInARowToWin) {
+    public static int verifyWinner(TileBoard.Tile[][] tiles, String playerSymbol, String opponentSymbol, int howManyInARowToWin) {
 
         // Check rows
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j <= board[i].length - howManyInARowToWin; j++) {
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j <= tiles[i].length - howManyInARowToWin; j++) {
                 boolean playerWin = true;
                 boolean opponentWin = true;
 
                 for (int k = 0; k < howManyInARowToWin; k++) {
-                    if (board[i][j + k] != playerSymbol) {
+                    if (!tiles[i][j + k].getValue().equals(playerSymbol)) {
                         playerWin = false;
                     }
-                    if (board[i][j + k] != opponentSymbol) {
+                    if (!tiles[i][j + k].getValue().equals(opponentSymbol)) {
                         opponentWin = false;
                     }
                 }
@@ -69,16 +67,16 @@ public class GameLogicsFX {
         }
 
         // Check columns
-        for (int i = 0; i <= board.length - howManyInARowToWin; i++) {
-            for (int j = 0; j < board[i].length; j++) {
+        for (int i = 0; i <= tiles.length - howManyInARowToWin; i++) {
+            for (int j = 0; j < tiles[i].length; j++) {
                 boolean playerWin = true;
                 boolean opponentWin = true;
 
                 for (int k = 0; k < howManyInARowToWin; k++) {
-                    if (board[i + k][j] != playerSymbol) {
+                    if (!tiles[i + k][j].getValue().equals(String.valueOf(playerSymbol))) {
                         playerWin = false;
                     }
-                    if (board[i + k][j] != opponentSymbol) {
+                    if (!tiles[i + k][j].getValue().equals(String.valueOf(opponentSymbol))) {
                         opponentWin = false;
                     }
                 }
@@ -93,16 +91,16 @@ public class GameLogicsFX {
         }
 
         // Check diagonals (top-left to bottom-right)
-        for (int i = 0; i <= board.length - howManyInARowToWin; i++) {
-            for (int j = 0; j <= board[i].length - howManyInARowToWin; j++) {
+        for (int i = 0; i <= tiles.length - howManyInARowToWin; i++) {
+            for (int j = 0; j <= tiles[i].length - howManyInARowToWin; j++) {
                 boolean playerWin = true;
                 boolean opponentWin = true;
 
                 for (int k = 0; k < howManyInARowToWin; k++) {
-                    if (board[i + k][j + k] != playerSymbol) {
+                    if (!tiles[i + k][j + k].getValue().equals(String.valueOf(playerSymbol))) {
                         playerWin = false;
                     }
-                    if (board[i + k][j + k] != opponentSymbol) {
+                    if (!tiles[i + k][j + k].getValue().equals(String.valueOf(opponentSymbol))) {
                         opponentWin = false;
                     }
                 }
@@ -117,16 +115,16 @@ public class GameLogicsFX {
         }
 
         // Check diagonals (top-right to bottom-left)
-        for (int i = 0; i <= board.length - howManyInARowToWin; i++) {
-            for (int j = board[i].length - 1; j >= howManyInARowToWin - 1; j--) {
+        for (int i = 0; i <= tiles.length - howManyInARowToWin; i++) {
+            for (int j = tiles[i].length - 1; j >= howManyInARowToWin - 1; j--) {
                 boolean playerWin = true;
                 boolean opponentWin = true;
 
                 for (int k = 0; k < howManyInARowToWin; k++) {
-                    if (board[i + k][j - k] != playerSymbol) {
+                    if (!tiles[i + k][j - k].getValue().equals(String.valueOf(playerSymbol))) {
                         playerWin = false;
                     }
-                    if (board[i + k][j - k] != opponentSymbol) {
+                    if (!tiles[i + k][j - k].getValue().equals(String.valueOf(opponentSymbol))) {
                         opponentWin = false;
                     }
                 }
@@ -144,10 +142,10 @@ public class GameLogicsFX {
         return 0;
     }
 
-    public static boolean isBoardCompleted(char[][] board) {
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j] == Symbol.EMPTY_FIELD) {
+    public static boolean isBoardCompleted(TileBoard.Tile[][] tiles) {
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[i].length; j++) {
+                if (tiles[i][j].getValue().isEmpty()) {
                     return false;
                 }
             }
@@ -155,14 +153,14 @@ public class GameLogicsFX {
         return true;
     }
 
-    public static boolean hasChanceToWin(char[][] board, char playerSymbol, int howManyInARowToWin) {
+    public static boolean hasChanceToWin(TileBoard.Tile[][] tiles, String playerSymbol, int howManyInARowToWin) {
         // Check rows
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j <= board[i].length - howManyInARowToWin; j++) {
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j <= tiles[i].length - howManyInARowToWin; j++) {
                 boolean hasChance = false;
 
                 for (int k = 0; k < howManyInARowToWin; k++) {
-                    if (board[i][j + k] == playerSymbol || board[i][j + k] == Symbol.EMPTY_FIELD) {
+                    if (tiles[i][j + k].getValue().equals(playerSymbol) || tiles[i][j + k].getValue().isEmpty()) {
                         hasChance = true;
                     } else {
                         hasChance = false;
@@ -177,12 +175,12 @@ public class GameLogicsFX {
         }
 
         // Check columns
-        for (int i = 0; i <= board.length - howManyInARowToWin; i++) {
-            for (int j = 0; j < board[i].length; j++) {
+        for (int i = 0; i <= tiles.length - howManyInARowToWin; i++) {
+            for (int j = 0; j < tiles[i].length; j++) {
                 boolean hasChance = false;
 
                 for (int k = 0; k < howManyInARowToWin; k++) {
-                    if (board[i + k][j] == playerSymbol || board[i + k][j] == Symbol.EMPTY_FIELD) {
+                    if (tiles[i + k][j].getValue().equals(playerSymbol) || tiles[i + k][j].getValue().isEmpty()) {
                         hasChance = true;
                     } else {
                         hasChance = false;
@@ -197,12 +195,12 @@ public class GameLogicsFX {
         }
 
         // Check diagonals (top-left to bottom-right)
-        for (int i = 0; i <= board.length - howManyInARowToWin; i++) {
-            for (int j = 0; j <= board[i].length - howManyInARowToWin; j++) {
+        for (int i = 0; i <= tiles.length - howManyInARowToWin; i++) {
+            for (int j = 0; j <= tiles[i].length - howManyInARowToWin; j++) {
                 boolean hasChance = false;
 
                 for (int k = 0; k < howManyInARowToWin; k++) {
-                    if (board[i + k][j + k] == playerSymbol || board[i + k][j + k] == Symbol.EMPTY_FIELD) {
+                    if (tiles[i + k][j + k].getValue().equals(playerSymbol) || tiles[i + k][j + k].getValue().isEmpty()) {
                         hasChance = true;
                     } else {
                         hasChance = false;
@@ -217,12 +215,12 @@ public class GameLogicsFX {
         }
 
         // Check diagonals (top-right to bottom-left)
-        for (int i = 0; i <= board.length - howManyInARowToWin; i++) {
-            for (int j = board[i].length - 1; j >= howManyInARowToWin - 1; j--) {
+        for (int i = 0; i <= tiles.length - howManyInARowToWin; i++) {
+            for (int j = tiles[i].length - 1; j >= howManyInARowToWin - 1; j--) {
                 boolean hasChance = false;
 
                 for (int k = 0; k < howManyInARowToWin; k++) {
-                    if (board[i + k][j - k] == playerSymbol || board[i + k][j - k] == Symbol.EMPTY_FIELD) {
+                    if (tiles[i + k][j - k].getValue().equals(playerSymbol) || tiles[i + k][j - k].getValue().isEmpty()) {
                         hasChance = true;
                     } else {
                         hasChance = false;
@@ -239,4 +237,3 @@ public class GameLogicsFX {
         return false;
     }
 }
-*/

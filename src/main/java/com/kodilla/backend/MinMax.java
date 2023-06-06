@@ -1,3 +1,4 @@
+/*
 package com.kodilla.backend;
 
 public class MinMax {
@@ -72,3 +73,4 @@ public class MinMax {
         }
     }
 }
+*/

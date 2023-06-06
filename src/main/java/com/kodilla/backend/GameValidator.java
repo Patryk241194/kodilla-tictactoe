@@ -1,3 +1,5 @@
+/*
+
 package com.kodilla.backend;
 
 public class GameValidator {
@@ -96,3 +98,5 @@ public class GameValidator {
         return isFieldEmpty;
     }
 }
+
+*/

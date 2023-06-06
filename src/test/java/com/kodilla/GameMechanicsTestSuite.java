@@ -1,3 +1,4 @@
+/*
 package com.kodilla;
 
 import com.kodilla.backend.GameLogics;
@@ -29,7 +30,7 @@ public class GameMechanicsTestSuite {
 
         // then
         int expectedWinner = -1;
-        int actualWinner = GameLogics.verifyWinner(game.getGameBoard().getBoard(), player1.getSymbol(), player2.getSymbol(), game.getHowManyInARowToWin());
+        int actualWinner = GameLogicsFX.verifyWinner(game.getGameBoard().getBoard(), player1.getSymbol(), player2.getSymbol(), game.getHowManyInARowToWin());
 
         assertEquals(expectedWinner, actualWinner);
         assertTrue(game.verifyResultOfTheDuel(player1, player2));
@@ -199,3 +200,4 @@ public class GameMechanicsTestSuite {
     }
 
 }
+*/

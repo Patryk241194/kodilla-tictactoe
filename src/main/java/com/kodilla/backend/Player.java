@@ -5,9 +5,9 @@ import java.io.Serializable;
 public class Player implements Serializable {
 
     private String name;
-    private transient char symbol;
+    private transient String symbol;
 
-    public Player(String name, char userSymbol) {
+    public Player(String name, String userSymbol) {
         this.name = name;
         this.symbol = userSymbol;
     }
@@ -16,7 +16,7 @@ public class Player implements Serializable {
         return name;
     }
 
-    public char getSymbol() {
+    public String getSymbol() {
         return symbol;
     }
 

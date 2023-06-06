@@ -1,3 +1,4 @@
+/*
 package com.kodilla.backend;
 
 import java.util.Arrays;
@@ -61,3 +62,4 @@ public class GameBoard {
                 '}';
     }
 }
+*/

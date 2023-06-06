@@ -1,7 +1,7 @@
 package com.kodilla.frontend;
 
-import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,6 +12,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+import static com.kodilla.frontend.UIConstants.*;
+
 public class InfoCenter {
 
     private final StackPane pane;
@@ -20,8 +22,10 @@ public class InfoCenter {
     private final Button showRulesButton;
     private final Button rankingButton;
     private final Button quitGameButton;
+    private final Button playAgainButton;
+    private final Button mainMenuButton;
     private final ImageView background;
-    private final ImageView gameProducer;
+    private final ImageView gameProducerLogo;
 
     public InfoCenter() {
         pane = new StackPane();
@@ -31,7 +35,7 @@ public class InfoCenter {
         message.setMinSize(UIConstants.INFO_CENTER_WIDTH, UIConstants.INFO_CENTER_HEIGHT);
         message.setFont(Font.font("Arial", FontWeight.BOLD, 48));
         message.setAlignment(Pos.CENTER);
-        message.setTranslateY(-110);
+        message.setTranslateY(-120);
         DropShadow dropShadow = new DropShadow();
         dropShadow.setColor(Color.BLACK);
         dropShadow.setRadius(3);
@@ -60,19 +64,33 @@ public class InfoCenter {
         quitGameButton.setTranslateY(60);
         pane.getChildren().add(quitGameButton);
 
+        playAgainButton = new Button("Play Again");
+        playAgainButton.setMinSize(80, 20);
+        playAgainButton.setTranslateX(-50);
+        playAgainButton.setTranslateY(-80);
+        playAgainButton.setVisible(false);
+        pane.getChildren().add(playAgainButton);
+
+        mainMenuButton = new Button("Main Menu");
+        mainMenuButton.setMinSize(80, 20);
+        mainMenuButton.setTranslateX(50);
+        mainMenuButton.setTranslateY(-80);
+        mainMenuButton.setVisible(false);
+        pane.getChildren().add(mainMenuButton);
+
         background = new ImageView("images/tictactoe - background.jpg");
         background.setFitWidth(UIConstants.INFO_CENTER_WIDTH);
         background.setFitHeight(UIConstants.INFO_CENTER_HEIGHT);
         pane.getChildren().add(0, background);
 
-        gameProducer = new ImageView("images/kodilla.png");
-        gameProducer.setFitWidth(100);
-        gameProducer.setFitHeight(100);
-        gameProducer.setTranslateX(-95);
-        gameProducer.setTranslateY(120);
+        gameProducerLogo = new ImageView("images/kodilla.png");
+        gameProducerLogo.setFitWidth(100);
+        gameProducerLogo.setFitHeight(100);
+        gameProducerLogo.setTranslateX(-95);
+        gameProducerLogo.setTranslateY(120);
         dropShadow.setSpread(1.5);
-        gameProducer.setEffect(dropShadow);
-        pane.getChildren().add(gameProducer);
+        gameProducerLogo.setEffect(dropShadow);
+        pane.getChildren().add(gameProducerLogo);
 
     }
 
@@ -84,15 +102,97 @@ public class InfoCenter {
         this.message.setText(message);
     }
 
-    public void showStartButton() {
-        startGameButton.setVisible(true);
+    public void updateRankingUI(int fontSize) {
+        this.message.setFont(Font.font("Arial", FontWeight.BOLD, fontSize));
+        message.setTranslateY(-30);
+        mainMenuButton.setTranslateY(-115);
     }
 
-    public void hideStartButton() {
+    public void updateRulesUI(int fontSize) {
+        this.message.setFont(Font.font("Arial", FontWeight.BOLD, fontSize));
+        message.setTranslateY(-30);
+        mainMenuButton.setTranslateY(-115);
+        mainMenuButton.setTranslateX(TILE_SIZE / 2 * (3 - INFO_CENTER_WIDTH / TILE_SIZE) + 50);
+    }
+
+    public void editMessageStyle() {
+        this.message.setTranslateX(TILE_SIZE / 2 * (BOARD_SIZE - INFO_CENTER_WIDTH / TILE_SIZE));
+        this.message.setFont(Font.font("Arial", FontWeight.BOLD, 32));
+    }
+
+    public void hideMessage() {
+        message.setVisible(false);
+    }
+
+    public void showPlayAgainButton() {
+        playAgainButton.setVisible(true);
+        playAgainButton.setTranslateX(TILE_SIZE / 2 * (BOARD_SIZE - INFO_CENTER_WIDTH / TILE_SIZE) - 50);
+    }
+
+    public void hidePlayAgainButton() {
+        playAgainButton.setVisible(false);
+    }
+
+    public void showMainMenuButton() {
+        mainMenuButton.setVisible(true);
+        mainMenuButton.setTranslateX(TILE_SIZE / 2 * (BOARD_SIZE - INFO_CENTER_WIDTH / TILE_SIZE) + 50);
+    }
+
+    public void hideMainMenuButton() {
+        mainMenuButton.setVisible(false);
+    }
+
+    public void showMenuButtons() {
+        startGameButton.setVisible(true);
+        showRulesButton.setVisible(true);
+        rankingButton.setVisible(true);
+        quitGameButton.setVisible(true);
+    }
+
+    public void hideAllButtons() {
         startGameButton.setVisible(false);
+        showRulesButton.setVisible(false);
+        rankingButton.setVisible(false);
+        quitGameButton.setVisible(false);
+        playAgainButton.setVisible(false);
+        mainMenuButton.setVisible(false);
+    }
+
+    public void showAllImages() {
+        background.setVisible(true);
+        gameProducerLogo.setVisible(true);
+    }
+
+    public void hideAllImages() {
+        background.setVisible(false);
+        gameProducerLogo.setVisible(false);
+    }
+
+    public void setPaneSizeToDefault() {
+        pane.setMinSize(UIConstants.INFO_CENTER_WIDTH, UIConstants.INFO_CENTER_HEIGHT);
     }
 
     public void setStartGameButtonOnAction(EventHandler<ActionEvent> onAction) {
         startGameButton.setOnAction(onAction);
+    }
+
+    public void setShowRulesButtonOnAction(EventHandler<ActionEvent> onAction) {
+        showRulesButton.setOnAction(onAction);
+    }
+
+    public void setRankingButtonOnAction(EventHandler<ActionEvent> onAction) {
+        rankingButton.setOnAction(onAction);
+    }
+
+    public void setQuitGameButtonOnAction(EventHandler<ActionEvent> onAction) {
+        quitGameButton.setOnAction(onAction);
+    }
+
+    public void setPlayAgainButtonOnAction(EventHandler<ActionEvent> onAction) {
+        playAgainButton.setOnAction(onAction);
+    }
+
+    public void setMainMenuButtonOnAction(EventHandler<ActionEvent> onAction) {
+        mainMenuButton.setOnAction(onAction);
     }
 }
